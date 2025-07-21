@@ -13,7 +13,8 @@ export default function App() {
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<MainView/>}/>
                     <Route path="signUp" element={<SignUp/>}/>
-                    <Route path="login" element={<Login/>}/>
+                    <Route path="login" element={<Login />} />
+                    
 
                     <Route path="*" element={<p>404 - Page not found</p>}/>
                 </Route>

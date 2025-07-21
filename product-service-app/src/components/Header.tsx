@@ -10,16 +10,16 @@ export default function Header() {
                 <div className="header-container">
                     <Link to="/" className="logo" aria-label="Home">
                         <img
-                            src="https://img.icons8.com/?size=100&id=xQKKgneHmsia&format=png&color=000000"
+                            src="https://img.icons8.com/?size=100&id=ecFqihp4hbvR&format=png&color=000000"
                             alt="Travel accommodation logo"
                             className="logo-image"
                         />
-                        <h1 className="logo-text">Hotels.</h1>
+                        <h1 className="logo-text">Product Donor</h1>
                     </Link>
                     <nav aria-label="Main navigation">
                         <ul className="nav-list">
                             <li className="nav-item">
-                                <Link to="/" className="nav-link">Hotels</Link>
+                                <Link to="/" className="nav-link">Products</Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/reservation" className="nav-link">Reservations</Link>
@@ -65,17 +65,17 @@ export default function Header() {
                 <div className="header-container">
                     <Link to="/" className="logo" aria-label="Home">
                         <img
-                            src="https://img.icons8.com/?size=100&id=xQKKgneHmsia&format=png&color=000000"
+                            src="https://img.icons8.com/?size=100&id=ecFqihp4hbvR&format=png&color=000000"
                             alt="Travel accommodation logo"
                             className="logo-image"
                         />
                         <h1 className="logo-text">
-                        Hotels.</h1>
+                        Product Donor</h1>
                     </Link>
                     <nav aria-label="Main navigation">
                         <ul className="nav-list">
                             <li className="nav-item">
-                                <Link to="/" className="nav-link">Hotels</Link>
+                                <Link to="/" className="nav-link">Products</Link>
                             </li>
                             <li className="nav-item">
                                 <Link to="/favorite" className="nav-link">Favorite</Link>
