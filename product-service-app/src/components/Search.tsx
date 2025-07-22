@@ -17,10 +17,11 @@ export default function Search() {
     
     setLoading(true);
     try {
-      // Replace with your actual backend URL
-      const response = await axios.post('http://localhost:5000/search', {
+  
+      const response = await axios.post<SearchResult[]>('http://localhost:5050/search', {
         query
-      });
+   });
+
       setResults(response.data);
     } catch (error) {
       console.error('Search failed:', error);

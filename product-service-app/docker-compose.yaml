@@ -1,0 +1,20 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80"
+    networks:
+      - orderpage_network
+    # environment:
+    #   - VITE_API_URL=http://embedder:5000
+
+
+networks:
+  orderpage_network:
+    driver: bridge
+
+volumes:
+  pgdata:
+  ollama_data:
