@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import MainView from "./pages/MainView";
 
+
 export default function App() {
     return (
         <UserProvider>
@@ -14,7 +15,7 @@ export default function App() {
                     <Route index element={<MainView/>}/>
                     <Route path="signUp" element={<SignUp/>}/>
                     <Route path="login" element={<Login />} />
-                    
+            
 
                     <Route path="*" element={<p>404 - Page not found</p>}/>
                 </Route>

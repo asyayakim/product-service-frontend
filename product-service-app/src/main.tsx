@@ -4,6 +4,7 @@ import './index.css'
 import './loginregister.css'
 import './search.css'
 import './chatSearchWidget.css'
+import './main-view.css'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router-dom'
 
