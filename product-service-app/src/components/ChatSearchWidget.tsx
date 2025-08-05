@@ -79,8 +79,7 @@ export default function ChatSearchWidget() {
               <div className="welcome-message">
                 <p>Hi! I'm your product assistant. Ask me about products like:</p>
                 <ul>
-                  <li>"Ergonomic office chairs"</li>
-                  <li>"Wireless electronics"</li>
+                  <li>"Healthy snacks"</li>
                   <li>"Organic groceries"</li>
                 </ul>
               </div>

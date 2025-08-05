@@ -20,12 +20,8 @@ const ProductCard = ({
   productName,
   brand,
   unitPrice,
-  description,
   store
 }: ProductCardProps) => {
-  const truncateDescription = (text: string, maxLength = 80) =>
-    text.length > maxLength ? `${text.substring(0, maxLength)}...` : text;
-
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('no-NO', {
       minimumFractionDigits: 2,
@@ -34,17 +30,17 @@ const ProductCard = ({
 
   return (
     <div className="product-card">
-       <div className="product-image-container">
-    <img
-      src={imageUrl}
-      alt={productName}
-      className="product-image"
-      loading="lazy"
-      onError={(e) => {
-        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/200?text=No+Image';
-      }}
-    />
-  </div>
+      <div className="product-image-container">
+        <img
+          src={imageUrl}
+          alt={productName}
+          className="product-image"
+          loading="lazy"
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/200?text=No+Image';
+          }}
+        />
+      </div>
       <div className="product-details">
         <div className="brand">{brand}</div>
         <h3 className="product-name">{productName}</h3>
@@ -78,34 +74,76 @@ interface ApiProduct {
   };
 }
 
+// Pagination state interface
+interface PaginationState {
+  page: number;
+  pageSize: number;
+  hasMore: boolean;
+}
+
 export default function MainView() {
   const [products, setProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // Pagination state
+  const [pagination, setPagination] = useState<PaginationState>({
+    page: 1,
+    pageSize: 20,  // Load 20 products at a time
+    hasMore: true
+  });
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
+  const fetchProducts = async (page: number, pageSize: number) => {
+    try {
+      const isInitialLoad = page === 1;
+      if (isInitialLoad) {
         setLoading(true);
         setError(null);
-        const response = await fetch('http://localhost:5001/api/products/products-frontend?pageNumber=1&pageSize=10');
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        setProducts(data);
-      } catch (err) {
-        setError(err.message || 'An error occurred while fetching products');
-        console.error('Fetch error:', err);
-      } finally {
-        setLoading(false);
+      } else {
+        setLoadingMore(true);
       }
-    };
 
-    fetchProducts();
+      const response = await fetch(
+        `http://localhost:5001/api/products/products-frontend?pageNumber=${page}&pageSize=${pageSize}`
+      );
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      // Update products state
+      if (isInitialLoad) {
+        setProducts(data);
+      } else {
+        setProducts(prev => [...prev, ...data]);
+      }
+      
+      // Update pagination state
+      setPagination(prev => ({
+        ...prev,
+        page,
+        hasMore: data.length === pageSize
+      }));
+    } catch (err) {
+      setError(err.message || 'An error occurred while fetching products');
+      console.error('Fetch error:', err);
+    } finally {
+      setLoading(false);
+      setLoadingMore(false);
+    }
+  };
+
+  // Initial load
+  useEffect(() => {
+    fetchProducts(1, pagination.pageSize);
   }, []);
+
+  const handleLoadMore = () => {
+    fetchProducts(pagination.page + 1, pagination.pageSize);
+  };
 
   return (
     <main className="main-view">
@@ -123,18 +161,36 @@ export default function MainView() {
       )}
       
       {!loading && !error && (
-        <div className="products-grid">
-          {products.length > 0 ? (
-            products.map(product => (
-              <ProductCard
-                key={product.productId}
-                {...product}
-              />
-            ))
-          ) : (
-            <div className="no-products">No products found</div>
+        <>
+          <div className="products-grid">
+            {products.length > 0 ? (
+              products.map(product => (
+                <ProductCard
+                  key={product.productId}
+                  {...product}
+                />
+              ))
+            ) : (
+              <div className="no-products">No products found</div>
+            )}
+          </div>
+          
+          {pagination.hasMore && (
+            <div className="load-more-container">
+              <button 
+                onClick={handleLoadMore} 
+                disabled={loadingMore}
+                className="load-more-button"
+              >
+                {loadingMore ? (
+                  <span className="loading-indicator">Loading...</span>
+                ) : (
+                  'Load More Products'
+                )}
+              </button>
+            </div>
           )}
-        </div>
+        </>
       )}
     </main>
   );
