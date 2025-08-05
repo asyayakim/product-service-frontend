@@ -1,0 +1,61 @@
+
+.favorite-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: #555;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.favorite-button:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.favorite-button.active {
+  color: #e74c3c;
+}
+
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.basket-button {
+  background: #f8f9fa;
+  border: 1px solid #e1e5e9;
+  border-radius: 5px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #27ae60;
+  transition: all 0.2s ease;
+}
+
+.basket-button:hover {
+  background: #27ae60;
+  color: white;
+  transform: scale(1.05);
+}
+
+.basket-button.active {
+  background: #27ae60;
+  color: white;
+}

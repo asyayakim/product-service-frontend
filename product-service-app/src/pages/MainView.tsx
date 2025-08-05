@@ -1,68 +1,10 @@
 import { useEffect, useState } from 'react';
 import Search from '../components/Search.tsx';
+import ProductCard from '../components/productCard.tsx';
 
-interface ProductCardProps {
-  productId: string;
-  imageUrl: string;
-  productName: string;
-  brand: string;
-  unitPrice: number;
-  description: string;
-  store: {
-    name: string;
-    logo: string;
-  };
-}
-
-const ProductCard = ({
-  productId,
-  imageUrl,
-  productName,
-  brand,
-  unitPrice,
-  store
-}: ProductCardProps) => {
-  const formatPrice = (price: number) =>
-    new Intl.NumberFormat('no-NO', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    }).format(price);
-
-  return (
-    <div className="product-card">
-      <div className="product-image-container">
-        <img
-          src={imageUrl}
-          alt={productName}
-          className="product-image"
-          loading="lazy"
-          onError={(e) => {
-            (e.target as HTMLImageElement).src = 'https://via.placeholder.com/200?text=No+Image';
-          }}
-        />
-      </div>
-      <div className="product-details">
-        <div className="brand">{brand}</div>
-        <h3 className="product-name">{productName}</h3>
-        <div className="price">{formatPrice(unitPrice)} kr</div>
-        <div className="store-info">
-          <img
-            src={store.logo}
-            alt={store.name}
-            className="store-logo"
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/30?text=Store';
-            }}
-          />
-          <span>{store.name}</span>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 interface ApiProduct {
-  productId: string;
+  productId: number;
   imageUrl: string;
   productName: string;
   brand: string;
@@ -74,7 +16,6 @@ interface ApiProduct {
   };
 }
 
-// Pagination state interface
 interface PaginationState {
   page: number;
   pageSize: number;
@@ -87,10 +28,9 @@ export default function MainView() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  // Pagination state
   const [pagination, setPagination] = useState<PaginationState>({
     page: 1,
-    pageSize: 20,  // Load 20 products at a time
+    pageSize: 20, 
     hasMore: true
   });
 
@@ -114,21 +54,23 @@ export default function MainView() {
       
       const data = await response.json();
       
-      // Update products state
       if (isInitialLoad) {
         setProducts(data);
       } else {
         setProducts(prev => [...prev, ...data]);
       }
       
-      // Update pagination state
       setPagination(prev => ({
         ...prev,
         page,
         hasMore: data.length === pageSize
       }));
     } catch (err) {
-      setError(err.message || 'An error occurred while fetching products');
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('An error occurred while fetching products');
+      }
       console.error('Fetch error:', err);
     } finally {
       setLoading(false);
@@ -136,7 +78,6 @@ export default function MainView() {
     }
   };
 
-  // Initial load
   useEffect(() => {
     fetchProducts(1, pagination.pageSize);
   }, []);
