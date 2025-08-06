@@ -4,7 +4,12 @@
   margin: 0 auto;
   padding: 20px;
 }
-
+a {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
 .back-link {
   display: inline-block;
   margin-bottom: 20px;
@@ -14,7 +19,7 @@
 }
 
 .back-link:hover {
-  text-decoration: underline;
+  text-decoration: none;
 }
 
 .product-detail-container {
@@ -36,26 +41,7 @@
   object-fit: contain;
 }
 
-.product-info-section h1 {
-  font-size: 2rem;
-  margin-bottom: 5px;
-  color: #2c3e50;
-}
-
-.brand {
-  color: #7f8c8d;
-  font-size: 1.1rem;
-  margin-bottom: 20px;
-}
-
-.price {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #27ae60;
-  margin: 20px 0;
-}
-
-.store-info {
+.store-info-main {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -65,7 +51,7 @@
   border-bottom: 1px solid #eee;
 }
 
-.store-logo {
+.store-logo-main {
   width: 40px;
   height: 40px;
   object-fit: contain;

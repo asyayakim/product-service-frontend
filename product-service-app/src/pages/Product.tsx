@@ -80,11 +80,11 @@ export default function Product() {
           
           <div className="price">{product.unitPrice.toFixed(2)} kr</div>
           
-          <div className="store-info">
+          <div className="store-info-main">
             <img 
               src={product.store.logo} 
               alt={product.store.name} 
-              className="store-logo"
+              className="store-logo-main"
             />
             <span>Available at {product.store.name}</span>
           </div>

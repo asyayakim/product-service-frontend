@@ -1,5 +1,4 @@
 
-
 :root {
   --primary: #2D9B92;
   --primary-dark: #0a7569;
@@ -36,93 +35,6 @@ body {
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-/*header and image*/
-header {
-  /* background-color: var(--primary); */
-  color: var(- --text-dark);
-  padding: 1rem 2rem;
-  position: sticky;
-}
-
-.header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-.logo-text {
-  color: var(  --secondary);
-  font-size: 2rem;
-}
-
-.logo {
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-decoration: none;
-  /* color: var(--text-light); */
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-.logo-image{
-  /* background-color:var(--text-light); */
-  border-radius: 5%;
-  height: 50px;
-  width: 50px;
-}
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-}
-
-nav a {
-  color: var(--secondary);
-  font-size: 1.1rem;
-  /* padding: 0.5rem 0; */
-  border-bottom: 2px solid transparent;
-  text-decoration: none;
-  font-weight: 500;
-  transition: opacity 0.2s;
-}
-
-nav a:hover {
-  opacity: 0.9;
-  border-bottom: var(--accent) 1.5px solid;
-  color: var(  --secondary-light);
-}
-.user-profile-container {
-  display: flex;
-}
-.default-avatar {
-  background-color: #fff;
-}
-.avatar-link {
-  margin: 0 1rem;
-}
-.avatar-logout-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.avatar-overlay {
-  background-color: var(--background);
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 1px solid var(--accent);
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.avatar-overlay:hover {
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
 
 main {
@@ -189,9 +101,6 @@ footer {
   transition: color 0.2s;
 }
 
-.footer-section a:hover {
-  color: var(--sand);
-}
 
 .copyright {
   text-align: center;
@@ -202,28 +111,7 @@ footer {
   font-size: 0.9rem;
 }
 
-.btn {
-  display: inline-block;
-  padding: 0.8rem 1.8rem;
-  border-radius: 50px;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s;
-  border: none;
-  cursor: pointer;
-}
 
-.btn-primary {
-  background: var(--accent);
-  color: var(--text-light);
-  font-size: 1rem;
-  transition: transform 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: var(--accent-dark);
-  transform: translateY(-2px);
-}
 
 .container {
   max-width: 1200px;
@@ -286,18 +174,7 @@ footer {
   font-weight: bold;
 }
 @media (max-width: 768px) {
-  .header-container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .hotel-section {
-    padding: none;
-  }
-  nav ul {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
+  
   main {
     padding: 1px;
   }

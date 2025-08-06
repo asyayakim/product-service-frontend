@@ -1,0 +1,157 @@
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes } from 'react-icons/fa';
+
+
+type CommonHeaderProps = {
+  user: any;
+  logout: () => void;
+};
+
+const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  
+  useEffect(() => {
+    if (isSearchOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isSearchOpen]);
+
+  return (
+    <header className="main-header">
+      {/* Search Sidebar Overlay */}
+      {isSearchOpen && (
+        <div 
+          className="search-overlay"
+          onClick={() => setIsSearchOpen(false)}
+        />
+      )}
+      
+      {/* Search Sidebar */}
+      <div className={`search-sidebar ${isSearchOpen ? 'active' : ''}`}>
+        <div className="sidebar-header">
+          <h3>Search Products</h3>
+          <button
+            className="close-btn"
+            onClick={() => setIsSearchOpen(false)}
+            aria-label="Close search"
+          >
+            <FaTimes />
+          </button>
+        </div>
+        <div className="search-content">
+          <div className="search-input-group">
+            <input 
+              type="text" 
+              placeholder="Search for products, brands..." 
+              className="search-input"
+            />
+            <button className="search-button">
+                
+              <FaSearch />
+            </button>
+          </div>
+          <div className="recent-searches">
+            <h4>Recent Searches</h4>
+            <ul>
+              <li>Organic Vegetables</li>
+              <li>Whole Grain Bread</li>
+              <li>Fair Trade Coffee</li>
+            </ul>
+          </div>
+          <div className="popular-categories">
+            <h4>Popular Categories</h4>
+            <div className="category-grid">
+              <div className="category-card">Fruits & Vegetables</div>
+              <div className="category-card">Bakery</div>
+              <div className="category-card">Dairy & Eggs</div>
+              <div className="category-card">Beverages</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="header-container">
+        <Link to="/" className="logo" aria-label="Home">
+          <div className="logo-wrapper">
+            <img
+              src="https://img.icons8.com/?size=100&id=ecFqihp4hbvR&format=png&color=27ae60"
+              alt="Marketplace logo"
+              className="logo-image"
+            />
+            <h1 className="logo-text">Product Donor</h1>
+          </div>
+        </Link>
+
+        <nav aria-label="Main navigation">
+          <ul className="nav-list">
+            <li className="nav-item search-icon">
+              <button
+                className="nav-button"
+                onClick={() => setIsSearchOpen(true)}
+                aria-label="Open search"
+              >
+                <FaSearch />
+                <span className="nav-text">Search</span>
+              </button>
+            </li>
+
+            <li className="nav-item">
+              <Link to="/" className="nav-link">
+                <FaHome />
+                <span className="nav-text">Home</span>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to="/favorite" className="nav-link">
+                <FaHeart />
+                <span className="nav-text">Favorites</span>
+              </Link>
+            </li>
+
+            <li className="nav-item basket-item">
+              <Link to="/basket" className="nav-link">
+                <div className="basket-icon-container">
+                  <FaShoppingBasket />
+                  <span className="basket-badge">3</span>
+                </div>
+                <span className="nav-text">Basket</span>
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              {user ? (
+                <button
+                  onClick={logout}
+                  className="nav-link"
+                  aria-label="Logout"
+                >
+                  <FaUser />
+                  <span className="nav-text">Logout</span>
+                </button>
+              ) : (
+                <Link
+                  to="/login"
+                  className="nav-link"
+                  aria-label="Login"
+                >
+                  <FaUser />
+                  <span className="nav-text">Login</span>
+                </Link>
+              )}
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+  );
+};
+
+export default CommonHeader;
