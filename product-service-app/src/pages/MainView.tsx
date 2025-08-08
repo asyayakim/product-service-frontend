@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
+import happyCustomerImg from '../assets/7475.jpg';
+
 
 
 interface ApiProduct {
@@ -87,7 +89,13 @@ export default function MainView() {
 
   return (
     <main className="main-view">
-    
+      <div className="store-ad-block">
+        <img src="https://img.freepik.com/free-vector/people-choosing-products-grocery-store-trolley-vegetables-basket-flat-vector-illustration-shopping-supermarket-concept_74855-10122.jpg?t=st=1754661651~exp=1754665251~hmac=a799647aaa0a8d564cc3c33a9f1b3495090913fefb12c3434425b0ff2cb16c76&w=720" alt="Market Logo" className="store-ad" />
+        <div className="store-ad-text">
+          <h3>Buy the food for those who need it <img src="https://img.icons8.com/?size=32&id=V4c6yYlvXtzy&format=png&color=000000" alt="heart" /></h3>
+        </div>
+      </div>
+
       {loading && <div className="loading">Loading products...</div>}
       
       {error && (

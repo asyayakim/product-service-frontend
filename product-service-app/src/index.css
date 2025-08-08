@@ -68,7 +68,6 @@ main {
 }
 
 footer {
-  background-color: var(--border);
   color: var(--text-dark);
   padding: 0.4rem;
   margin-top: auto;
