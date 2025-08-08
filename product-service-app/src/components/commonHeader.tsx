@@ -7,21 +7,53 @@ type CommonHeaderProps = {
   user: any;
   logout: () => void;
 };
+interface Store {
+  storeId: number;
+  storeName: string;
+  storeDescription: string;
+}
 
 const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  
+  const [stores, setStores] = useState<Store[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+
   useEffect(() => {
-    if (isSearchOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'auto';
-    }
-    
-    return () => {
-      document.body.style.overflow = 'auto';
+    const fetchStores = async () => {
+      if (!isSearchOpen) return;
+      
+      try {
+        setLoading(true);
+        const response = await fetch(`http://localhost:5001/api/stores/store-names`);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch stores: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        setStores(data);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch stores');
+      } finally {
+        setLoading(false);
+      }
     };
+
+    fetchStores();
   }, [isSearchOpen]);
+
+  useEffect(() => {
+    document.body.style.overflow = isSearchOpen ? 'hidden' : 'auto';
+    return () => { document.body.style.overflow = 'auto'; };
+  }, [isSearchOpen]);
+
+
+  const handleStoreClick = (storeId: number) => {
+    setIsSearchOpen(false);
+    console.log(`Navigating to store with ID: ${storeId}`);
+  };
 
   return (
     <header className="main-header">
@@ -66,7 +98,25 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
             </ul>
           </div>
           <div className="popular-categories">
+            <h4>Stores</h4>
+            <div className="category-grid">
+            {stores.length > 0 ? (
+              stores.map(store => (
+                <div
+                  key={store.storeId}
+                  className="category-card"
+                  onClick={() => handleStoreClick(store.storeId)}
+                >
+                  <h5>{store.storeName}</h5>
+
+                </div>
+              ))
+            ) : (
+              <div className="no-products">No stores found</div>
+            )}
+          </div>
             <h4>Popular Categories</h4>
+
             <div className="category-grid">
               <div className="category-card">Fruits & Vegetables</div>
               <div className="category-card">Bakery</div>
