@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaRegHeart, FaHeart, FaShoppingBasket } from 'react-icons/fa';
 
@@ -21,10 +21,20 @@ const ProductCard = ({
   productName,
   brand,
   unitPrice,
+  description,
   store
 }: ProductCardProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isInBasket, setIsInBasket] = useState(false);
+
+  // Check localStorage when component mounts
+  useEffect(() => {
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+    const storedBasket = JSON.parse(localStorage.getItem('basket') || '[]');
+
+    setIsFavorite(storedFavorites.some((p: any) => p.productId === productId));
+    setIsInBasket(storedBasket.some((p: any) => p.productId === productId));
+  }, [productId]);
 
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('no-NO', {
@@ -35,12 +45,34 @@ const ProductCard = ({
   const handleFavoriteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+    let updatedFavorites;
+    if (isFavorite) {
+      updatedFavorites = storedFavorites.filter((p: any) => p.productId !== productId);
+    } else {
+      updatedFavorites = [...storedFavorites, { productId, imageUrl, productName, brand, unitPrice, store }];
+    }
+
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
     setIsFavorite(!isFavorite);
   };
 
   const handleBasketClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    const storedBasket = JSON.parse(localStorage.getItem('basket') || '[]');
+
+    let updatedBasket;
+    if (isInBasket) {
+      updatedBasket = storedBasket.filter((p: any) => p.productId !== productId);
+    } else {
+      updatedBasket = [...storedBasket, { productId, imageUrl, productName, brand, unitPrice, store }];
+    }
+
+    localStorage.setItem('basket', JSON.stringify(updatedBasket));
     setIsInBasket(!isInBasket);
   };
 
@@ -62,16 +94,13 @@ const ProductCard = ({
             }}
           />
           
+          {/* Favorite Button */}
           <button 
             className={`favorite-button ${isFavorite ? 'active' : ''}`}
             onClick={handleFavoriteClick}
             aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
           >
-            {isFavorite ? (
-              <FaHeart  />
-            ) : (
-              <FaRegHeart  />
-            )}
+            {isFavorite ? <FaHeart /> : <FaRegHeart />}
           </button>
         </div>
         
@@ -93,12 +122,13 @@ const ProductCard = ({
               <span>{store.name}</span>
             </div>
             
+            {/* Basket Button */}
             <button 
               className={`basket-button ${isInBasket ? 'active' : ''}`}
               onClick={handleBasketClick}
               aria-label={isInBasket ? 'Remove from basket' : 'Add to basket'}
             >
-              <FaShoppingBasket  />
+              <FaShoppingBasket />
             </button>
           </div>
         </div>
