@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
-import happyCustomerImg from '../assets/7475.jpg';
-
-
 
 interface ApiProduct {
   productId: number;
@@ -107,6 +104,7 @@ export default function MainView() {
       
       {!loading && !error && (
         <>
+        
           <div className="products-grid">
             {products.length > 0 ? (
               products.map(product => (

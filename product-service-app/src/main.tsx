@@ -8,6 +8,7 @@ import './main-view.css'
 import App from './App.tsx'
 import './product-card.css'
 import './product-details.css'
+import './css/css/main.css'
 import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')!).render(

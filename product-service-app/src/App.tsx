@@ -5,6 +5,7 @@ import UserProvider from "./components/UserProvider";
 import Login from "./pages/Login";
 import SignUp from "./pages/Signup";
 import MainView from "./pages/MainView";
+import Basket from "./pages/Basket";
 import Product from "./pages/Product";
 
 
@@ -19,8 +20,8 @@ export default function App() {
                     {/* <Route path="payment" element={<p>Payment Page</p>} />
                     <Route path="login/restorePassword" element={<p>Restore Password Page</p>} /> */}
                     <Route path="/products" element={<MainView/>}/>
-                    <Route path="/products/:productId" element={<Product/>}/>
-            
+                    <Route path="/products/:productId" element={<Product />} />
+                    <Route path="/basket" element={<Basket />} />
 
                     <Route path="*" element={<p>404 - Page not found</p>}/>
                 </Route>

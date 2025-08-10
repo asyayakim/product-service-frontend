@@ -9,8 +9,8 @@ type CommonHeaderProps = {
 };
 interface Store {
   storeId: number;
-  storeName: string;
-  storeDescription: string;
+  name: string;
+  description: string;
 }
 
 const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
@@ -89,14 +89,14 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
               <FaSearch />
             </button>
           </div>
-          <div className="recent-searches">
+          {/* <div className="recent-searches">
             <h4>Recent Searches</h4>
             <ul>
               <li>Organic Vegetables</li>
               <li>Whole Grain Bread</li>
               <li>Fair Trade Coffee</li>
             </ul>
-          </div>
+          </div> */}
           <div className="popular-categories">
             <h4>Stores</h4>
             <div className="category-grid">
@@ -107,7 +107,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
                   className="category-card"
                   onClick={() => handleStoreClick(store.storeId)}
                 >
-                  <h5>{store.storeName}</h5>
+                  <h5>{store.name}</h5>
 
                 </div>
               ))
