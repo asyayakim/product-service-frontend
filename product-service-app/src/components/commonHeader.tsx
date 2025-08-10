@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes } from 'react-icons/fa';
+import AdvertismentTop from './AdvertismentTop';
 
 
 type CommonHeaderProps = {
@@ -18,20 +19,41 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [favorites, setFavorites] = useState<any[]>([]);
+  const [basketItems, setBasketItems] = useState<any[]>([]);
 
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+      setFavorites(storedFavorites);
+      
+    };
+    
+
+    fetchFavorites();
+  }, []);
+
+  useEffect(() => {
+    const fetchBasketItems = async () => {
+      const storedBasket = JSON.parse(localStorage.getItem('basket') || '[]');
+      setBasketItems(storedBasket);
+    };
+
+    fetchBasketItems();
+  }, []);
 
   useEffect(() => {
     const fetchStores = async () => {
       if (!isSearchOpen) return;
-      
+
       try {
         setLoading(true);
         const response = await fetch(`http://localhost:5001/api/stores/store-names`);
-        
+
         if (!response.ok) {
           throw new Error(`Failed to fetch stores: ${response.status}`);
         }
-        
+
         const data = await response.json();
         setStores(data);
       } catch (err) {
@@ -56,15 +78,17 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
   };
 
   return (
-    <header className="main-header">
+    <header id="header" className="header sticky-top">
+      <AdvertismentTop />
+
       {/* Search Sidebar Overlay */}
       {isSearchOpen && (
-        <div 
+        <div
           className="search-overlay"
           onClick={() => setIsSearchOpen(false)}
         />
       )}
-      
+
       {/* Search Sidebar */}
       <div className={`search-sidebar ${isSearchOpen ? 'active' : ''}`}>
         <div className="sidebar-header">
@@ -79,13 +103,13 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
         </div>
         <div className="search-content">
           <div className="search-input-group">
-            <input 
-              type="text" 
-              placeholder="Search for products, brands..." 
+            <input
+              type="text"
+              placeholder="Search for products, brands..."
               className="search-input"
             />
             <button className="search-button">
-                
+
               <FaSearch />
             </button>
           </div>
@@ -100,24 +124,24 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
           <div className="popular-categories">
             <h4>Stores</h4>
             <div className="category-grid">
-            {stores.length > 0 ? (
-              stores.map(store => (
-                <div
-                  key={store.storeId}
-                  className="category-card"
-                  onClick={() => handleStoreClick(store.storeId)}
-                >
-                  <h5>{store.name}</h5>
+              {stores.length > 0 ? (
+                stores.map(store => (
+                  <div
+                    key={store.storeId}
+                    className="category-card"
+                    onClick={() => handleStoreClick(store.storeId)}
+                  >
+                    <h5>{store.name}</h5>
 
-                </div>
-              ))
-            ) : (
-              <div className="no-products">No stores found</div>
-            )}
-          </div>
+                  </div>
+                ))
+              ) : (
+                <div className="no-products">No stores found</div>
+              )}
+            </div>
             <h4>Popular Categories</h4>
 
-            <div className="category-grid">
+            <div className="category-card">
               <div className="category-card">Fruits & Vegetables</div>
               <div className="category-card">Bakery</div>
               <div className="category-card">Dairy & Eggs</div>
@@ -135,7 +159,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
               alt="Marketplace logo"
               className="logo-image"
             />
-            <h1 className="logo-text">Product Donor</h1>
+            <h1 className="site-name">Product Donor</h1>
           </div>
         </Link>
 
@@ -161,7 +185,10 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
 
             <li className="nav-item">
               <Link to="/favorite" className="nav-link">
-                <FaHeart />
+                <div className="basket-icon-container">
+                  <FaHeart />
+                  <span className="basket-badge">{favorites.length}</span>
+                </div>
                 <span className="nav-text">Favorites</span>
               </Link>
             </li>
@@ -170,7 +197,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
               <Link to="/basket" className="nav-link">
                 <div className="basket-icon-container">
                   <FaShoppingBasket />
-                  <span className="basket-badge">3</span>
+                  <span className="basket-badge">{basketItems.length}</span>
                 </div>
                 <span className="nav-text">Basket</span>
               </Link>

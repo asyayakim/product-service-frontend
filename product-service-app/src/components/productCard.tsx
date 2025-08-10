@@ -62,7 +62,6 @@ const ProductCard = ({
             }}
           />
           
-          {/* Favorite Button with Icons */}
           <button 
             className={`favorite-button ${isFavorite ? 'active' : ''}`}
             onClick={handleFavoriteClick}
@@ -94,7 +93,6 @@ const ProductCard = ({
               <span>{store.name}</span>
             </div>
             
-            {/* Basket Button with Icon */}
             <button 
               className={`basket-button ${isInBasket ? 'active' : ''}`}
               onClick={handleBasketClick}

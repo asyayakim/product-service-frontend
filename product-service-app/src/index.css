@@ -1,5 +1,6 @@
     /* src/input.css */
     /* src/input.css */
+    @import 'swiper/css';
 
     :root {
       --primary: #2D9B92;
