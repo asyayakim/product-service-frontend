@@ -16,7 +16,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<Layout/>}>
                     <Route index element={<MainView/>}/>
-                    <Route path="signUp" element={<SignUp/>}/>
+                    <Route path="register" element={<SignUp/>}/>
                     <Route path="login" element={<Login />} />
                     {/* <Route path="payment" element={<p>Payment Page</p>} />
                     <Route path="login/restorePassword" element={<p>Restore Password Page</p>} /> */}

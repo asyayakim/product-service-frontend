@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../components/UserProvider";
-import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 
 export const API_BASE_URL = "https://hotelservice-1.onrender.com";
 
@@ -10,7 +10,6 @@ export default function Login() {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -23,14 +22,14 @@ export default function Login() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userName, password }),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         setMessage(data.message || `Login failed: ${response.status}`);
         return;
       }
-      
+
       const user = {
         id: data.userDto.id,
         username: data.userDto.userName,
@@ -39,7 +38,7 @@ export default function Login() {
         token: data.token,
         imageUrl: data.userDto.imageUrl,
       };
-      
+
       login({ user, token: data.token });
       setMessage("Login successful!");
       navigate("/");
@@ -63,109 +62,60 @@ export default function Login() {
         </div>
       </div>
 
-      <section id="login" className="login section">
-        <div className="container" data-aos="fade-up" data-aos-delay="100">
-          <div className="row justify-content-center">
-            <div className="col-lg-8 col-md-10">
-              <div className="auth-container" data-aos="fade-in" data-aos-delay="200">
-                <div className="auth-form login-form active">
-                  <div className="form-header">
-                    <h3>Welcome Back</h3>
-                    <p>Sign in to your account</p>
-                  </div>
-
-                  <form className="auth-form-content" onSubmit={handleLogin}>
-                    <div className="input-group mb-3">
-                      <span className="input-icon">
-                        <img
-                          src="https://img.icons8.com/?size=100&id=zxB19VPoVLjK&format=png&color=000000"
-                          alt="Username Icon"
-                          width="20"
-                          height="20"
-                        />
-                      </span>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Username"
-                        value={userName}
-                        onChange={(e) => setUserName(e.target.value)}
-                        required
-                        autoComplete="username"
-                      />
-                    </div>
-
-                    <div className="input-group mb-3">
-                      <span className="input-icon">
-                        <img
-                          src="https://img.icons8.com/?size=100&id=14095&format=png&color=000000"
-                          alt="Password Icon"
-                          width="20"
-                          height="20"
-                        />
-                      </span>
-                      <input
-                        type={showPassword ? "text" : "password"}
-                        className="form-control"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        autoComplete="current-password"
-                      />
-                      <span 
-                        className="password-toggle"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
-                      </span>
-                    </div>
-
-                    <div className="form-options mb-4">
-                      <div className="remember-me">
-                        <input 
-                          type="checkbox" 
-                          id="rememberLogin"
-                          checked={rememberMe}
-                          onChange={(e) => setRememberMe(e.target.checked)}
-                        />
-                        <label htmlFor="rememberLogin">Remember me</label>
-                      </div>
-                      <Link to="/login/restorePassword" className="forgot-password">
-                        Forgot password?
-                      </Link>
-                    </div>
-
-                    <button type="submit" className="auth-btn primary-btn mb-3">
-                      Sign In
-                      <i className="bi bi-arrow-right"></i>
-                    </button>
-
-                    {message && <div className="message mb-3">{message}</div>}
-
-                    <div className="divider">
-                      <span>or</span>
-                    </div>
-
-                    <button type="button" className="auth-btn social-btn">
-                      <FaGoogle />
-                      Continue with Google
-                    </button>
-
-                    <div className="switch-form">
-                      <span>Don't have an account?</span>
-                      <button 
-                        type="button" 
-                        className="switch-btn" 
-                        onClick={() => navigate("/signUp")}
-                      >
-                        Create account
-                      </button>
-                    </div>
-                  </form>
-                </div>
-              </div>
+      <section id="login" className="py-12">
+        <div className="max-w-6xl px-4 mx-auto">
+          <div className="max-w-md p-8 mx-auto bg-white shadow-md rounded-xl">
+            <div className="mb-6 text-center">
+              <h3 className="text-2xl font-bold">Welcome Back</h3>
+              <p>Sign in to your account</p>
             </div>
+
+            <form onSubmit={handleLogin}>
+              <div className="flex items-center mb-4 overflow-hidden border rounded-lg">
+                <span className="px-3 text-gray-500">
+                  <FaUser />
+                </span>
+                <input
+                  type="text"
+                  className="w-full px-1 py-3 outline-none"
+                  placeholder="Username"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="flex items-center mb-4 overflow-hidden border rounded-lg">
+                <span className="px-3 text-gray-500">
+                  <FaLock />
+                </span>
+                <input
+                  type={showPassword ? "text" : "password"}
+                  className="w-full px-1 py-3 outline-none"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+                <span
+                  className="px-3 text-gray-500 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 font-medium text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
+              >
+                Sign In
+              </button>
+
+              {message && <p className="mt-4 text-red-500">{message}</p>}
+
+              <p className="mt-4 text-center">
+                Don't have an account? <Link to="/register" className="text-blue-600 hover:underline">Register</Link>
+              </p>
+            </form>
           </div>
         </div>
       </section>
