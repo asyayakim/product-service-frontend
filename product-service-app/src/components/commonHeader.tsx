@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes } from 'react-icons/fa';
 import AdvertismentTop from './AdvertismentTop';
-
+import { useCart } from './CartContext';
 
 type CommonHeaderProps = {
   user: any;
@@ -19,28 +19,8 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [favorites, setFavorites] = useState<any[]>([]);
-  const [basketItems, setBasketItems] = useState<any[]>([]);
+  const { favorites, basket } = useCart();
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
-      setFavorites(storedFavorites);
-      
-    };
-    
-
-    fetchFavorites();
-  }, []);
-
-  useEffect(() => {
-    const fetchBasketItems = async () => {
-      const storedBasket = JSON.parse(localStorage.getItem('basket') || '[]');
-      setBasketItems(storedBasket);
-    };
-
-    fetchBasketItems();
-  }, []);
 
   useEffect(() => {
     const fetchStores = async () => {
@@ -197,7 +177,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
               <Link to="/basket" className="nav-link">
                 <div className="basket-icon-container">
                   <FaShoppingBasket />
-                  <span className="basket-badge">{basketItems.length}</span>
+                  <span className="basket-badge">{basket.length}</span>
                 </div>
                 <span className="nav-text">Basket</span>
               </Link>
