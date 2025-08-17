@@ -1,4 +1,3 @@
-// src/context/CartContext.tsx
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 export type BasketItem = {
@@ -30,7 +29,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [basket, setBasket] = useState<BasketItem[]>(() => {
     try {
       const stored = JSON.parse(localStorage.getItem('basket') || '[]') as any[];
-      return stored.map(s => ({ quantity: 1, ...s }));
+       return stored.map((item: any) => ({
+        ...item,
+         quantity: item.quantity || 1 
+         }));
     } catch {
       return [];
     }
