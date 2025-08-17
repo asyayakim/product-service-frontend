@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes } from 'react-icons/fa';
 import AdvertismentTop from './AdvertismentTop';
-import { useCart } from './CartContext';
+import { useCart } from './context/CartContext';
 
 type CommonHeaderProps = {
   user: any;

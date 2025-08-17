@@ -1,6 +1,6 @@
 import { FaTrash, FaHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useCart } from '../components/CartContext';
+import { useCart } from '../components/context/CartContext';
 
 
 export default function Favorites() {

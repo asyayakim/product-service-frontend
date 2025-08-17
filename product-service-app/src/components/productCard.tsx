@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { FaRegHeart, FaHeart, FaShoppingBasket } from 'react-icons/fa';
-import { useCart } from './CartContext';
+import { useCart } from './context/CartContext';
 
 interface ProductCardProps {
   productId: number;

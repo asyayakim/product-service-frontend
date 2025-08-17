@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { useCart } from '../components/CartContext';
+import { useCart } from '../components/context/CartContext';
 import EmptyBasket from '../components/basket/EmptyBasket';
 import BasketItem from '../components/basket/BasketItem';
 import OrderSummary from '../components/basket/OrderSummary';

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { UserContext } from "./UserProvider";
+import { UserContext } from "./context/UserProvider";
 
 import CommonHeader from "./CommonHeader";
 

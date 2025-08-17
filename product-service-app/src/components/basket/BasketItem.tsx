@@ -1,5 +1,5 @@
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
-import type { BasketItem } from '../CartContext';
+import type { BasketItem } from '../context/CartContext';
 
 type BasketItemProps = {
   item: BasketItem;

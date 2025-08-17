@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../components/UserProvider";
+import { UserContext } from "../components/context/UserProvider";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 
 export const API_BASE_URL = "https://hotelservice-1.onrender.com";
