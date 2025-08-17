@@ -21,6 +21,7 @@ type CartContextType = {
   clearBasket: () => void;
   addToFavorites: (item: FavoriteItem) => void;
   removeFromFavorites: (productId: number) => void;
+  clearFavorites: () => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -74,6 +75,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearBasket = () => setBasket([]);
 
+  const clearFavorites = () => setFavorites([]);
+
   const addToFavorites = (item: FavoriteItem) => {
     setFavorites(prev => {
       if (prev.some(p => p.productId === item.productId)) return prev;
@@ -94,7 +97,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setQuantity,
       clearBasket,
       addToFavorites,
-      removeFromFavorites
+      removeFromFavorites,
+      clearFavorites
     }}>
       {children}
     </CartContext.Provider>
