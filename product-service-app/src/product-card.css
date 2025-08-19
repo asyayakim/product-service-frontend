@@ -86,13 +86,6 @@ a:hover {
   color: inherit;
 }
 
-.product-card:hover,
-.product-card:focus-visible {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 2px var(--shadow-hover);
-  border-color: var(--border-hover);
-  outline: none;
-}
 
 .product-card:focus-visible {
   box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5), 0 4px 8px var(--shadow-hover);

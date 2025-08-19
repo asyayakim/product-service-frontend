@@ -1,6 +1,18 @@
+//import { useCart } from '../components/context/CartContext';
+import {
+  FaTruck,
+  FaAward,
+  FaHeadset,
+  FaCartPlus,
+  FaHeart,
+  FaSearch
+} from 'react-icons/fa';
+
 export default function AddSection() {
+
+
   return (
-     <section id="hero" className="hero section">
+    <section id="hero" className="hero section">
 
       <div className="hero-container">
         <div className="hero-content">
@@ -13,15 +25,15 @@ export default function AddSection() {
             </div>
             <div className="features-list" data-aos="fade-up" data-aos-delay="300">
               <div className="feature-item">
-                <i className="bi bi-truck"></i>
+                <FaTruck className="icon" />
                 <span>Free Shipping</span>
               </div>
               <div className="feature-item">
-                <i className="bi bi-award"></i>
+                <FaAward className="icon" />
                 <span>Quality Products</span>
               </div>
               <div className="feature-item">
-                <i className="bi bi-headset"></i>
+                <FaHeadset className="icon" />
                 <span>24/7 Support</span>
               </div>
             </div>
@@ -31,7 +43,7 @@ export default function AddSection() {
         <div className="hero-visuals">
           <div className="product-showcase" data-aos="fade-left" data-aos-delay="200">
             <div className="product-card featured">
-              <img src="assets/img/product/product-2.webp" alt="Featured Product" className="img-fluid"/>
+              <img src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=700,636" alt="Featured Product" className="img-fluid" />
               <div className="product-badge">Best Seller</div>
               <div className="product-info">
                 <h4>Premium Wireless Headphones</h4>
@@ -44,11 +56,11 @@ export default function AddSection() {
 
             <div className="product-grid">
               <div className="product-mini" data-aos="zoom-in" data-aos-delay="400">
-                <img src="assets/img/product/product-3.webp" alt="Product" className="img-fluid" />
+                <img src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=700,636" alt="Product" className="img-fluid" />
                 <span className="mini-price">$89</span>
               </div>
               <div className="product-mini" data-aos="zoom-in" data-aos-delay="500">
-                <img src="assets/img/product/product-5.webp" alt="Product" className="img-fluid" />
+                <img src="https://images.immediate.co.uk/production/volatile/sites/30/2020/08/chorizo-mozarella-gnocchi-bake-cropped-9ab73a3.jpg?quality=90&resize=700,636" alt="Product" className="img-fluid" />
                 <span className="mini-price">$149</span>
               </div>
             </div>
@@ -56,14 +68,14 @@ export default function AddSection() {
 
           <div className="floating-elements">
             <div className="floating-icon cart" data-aos="fade-up" data-aos-delay="600">
-              <i className="bi bi-cart3"></i>
+              <FaCartPlus className="icon" />
               <span className="notification-dot">3</span>
             </div>
             <div className="floating-icon wishlist" data-aos="fade-up" data-aos-delay="700">
-              <i className="bi bi-heart"></i>
+              <FaHeart className="icon" />
             </div>
             <div className="floating-icon search" data-aos="fade-up" data-aos-delay="800">
-              <i className="bi bi-search"></i>
+              <FaSearch className="icon" />
             </div>
           </div>
         </div>
