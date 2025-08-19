@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes } from 'react-icons/fa';
 import AdvertismentTop from './AdvertismentTop';
 import { useCart } from './context/CartContext';
+import { useNavigate } from 'react-router-dom';
 
 type CommonHeaderProps = {
   user: any;
@@ -20,6 +21,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { favorites, basket } = useCart();
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -54,6 +56,8 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
 
   const handleStoreClick = (storeId: number) => {
     setIsSearchOpen(false);
+    navigate(`/store/${storeId}`);
+
     console.log(`Navigating to store with ID: ${storeId}`);
   };
 

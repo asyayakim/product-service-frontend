@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
 import AddSection from '../components/AddSection.tsx';
+import BestSellers from '../components/BestSellers.tsx';
 
 interface ApiProduct {
   productId: number;
@@ -88,6 +89,7 @@ export default function MainView() {
   return (
     <main className="main-view">
       <AddSection />
+      <BestSellers />
 
       {loading && <div className="loading">Loading products...</div>}
       

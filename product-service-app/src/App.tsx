@@ -8,6 +8,7 @@ import MainView from "./pages/MainView";
 import Basket from "./pages/Basket";
 import Product from "./pages/Product";
 import Favorites from "./pages/Favorites";
+import Store from "./pages/Store";
 
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
                     <Route path="/products/:productId" element={<Product />} />
                     <Route path="/basket" element={<Basket />} />
                     <Route path="/favorite" element={<Favorites />} />
+                    <Route path="/store/:storeId" element={<Store />} />
 
                     <Route path="*" element={<p>404 - Page not found</p>}/>
                 </Route>
