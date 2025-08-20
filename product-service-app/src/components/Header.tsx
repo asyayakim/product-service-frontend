@@ -21,7 +21,7 @@ export default function Header() {
             //     return renderAdminHeader();
             case "guest":
                 return (
-                    <header>
+                    <header className="sticky top-0 z-50 border-gray-200 shadow">
                         <CommonHeader user={user} logout={logout}/>
                     </header>
                 )
