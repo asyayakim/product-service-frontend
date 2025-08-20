@@ -7,6 +7,7 @@ interface ProductCardProps {
   imageUrl: string;
   productName: string;
   brand: string;
+  category?: string;
   unitPrice: number;
   description: string;
   store: {
@@ -19,6 +20,7 @@ const ProductCard = ({
   productId,
   imageUrl,
   productName,
+  category,
   brand,
   unitPrice,
   description,

@@ -17,7 +17,7 @@ export default function AddSection() {
   };
 
   const handleShopNow = () => {
-    navigate('/products'); 
+    navigate('/all-products'); 
   };
 
   

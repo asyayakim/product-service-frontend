@@ -10,6 +10,7 @@ import Product from "./pages/Product";
 import Favorites from "./pages/Favorites";
 import Store from "./pages/Store";
 import StoresPage from "./pages/StoresPage";
+import AllProducts from "./pages/AllProducts";
 
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
                     <Route path="/favorite" element={<Favorites />} />
                     <Route path="/store/:storeId" element={<Store />} />
                     <Route path="/stores" element={<StoresPage />} />
+                    <Route path="/all-products" element={<AllProducts />} />
 
                     <Route path="*" element={<p>404 - Page not found</p>}/>
                 </Route>

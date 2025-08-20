@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
-import AddSection from '../components/AddSection.tsx';
-import BestSellers from '../components/BestSellers.tsx';
+import AddSection from '../components/addvertisment/AddSection.tsx';
+import BestSellers from '../components/addvertisment/BestSellers.tsx';
 
 interface ApiProduct {
   productId: number;

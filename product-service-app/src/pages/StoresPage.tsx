@@ -1,52 +1,54 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import CVAdvertisement from '../components/addvertisment/CVAdvertisement';
 
 interface Store {
-  storeId: number;
-  name: string;
-  description: string;
-  logo?: string;
-  url?: string;
+    storeId: number;
+    name: string;
+    description: string;
+    logo?: string;
+    url?: string;
 }
 
 export default function StoresPage() {
-  const [stores, setStores] = useState<Store[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+    const [stores, setStores] = useState<Store[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchStores = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch('http://localhost:5001/api/stores/store-names');
+    useEffect(() => {
+        const fetchStores = async () => {
+            try {
+                setLoading(true);
+                const response = await fetch('http://localhost:5001/api/stores/store-names');
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch stores: ${response.status}`);
-        }
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch stores: ${response.status}`);
+                }
 
-        const data = await response.json();
-        setStores(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch stores');
-      } finally {
-        setLoading(false);
-      }
+                const data = await response.json();
+                setStores(data);
+            } catch (err) {
+                setError(err instanceof Error ? err.message : 'Failed to fetch stores');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchStores();
+    }, []);
+
+    const handleStoreClick = (storeId: number) => {
+        navigate(`/store/${storeId}`);
     };
 
-    fetchStores();
-  }, []);
+    if (loading) return <div className="p-4 text-gray-600">Loading stores...</div>;
+    if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
 
-  const handleStoreClick = (storeId: number) => {
-    navigate(`/store/${storeId}`);
-  };
-
-  if (loading) return <div className="p-4 text-gray-600">Loading stores...</div>;
-  if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
-
-  return (
+    return (
     <div className="container max-w-6xl p-4 mx-auto">
-      <div className="p-6 mb-6 bg-white rounded-lg shadow-sm">
+            <div className="p-6 mb-6 bg-white rounded-lg shadow-sm">
+                <CVAdvertisement/>
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-800">All Stores</h1>
           <div className="text-sm text-gray-500">
@@ -116,5 +118,5 @@ export default function StoresPage() {
         )}
       </div>
     </div>
-  );
+    );
 }

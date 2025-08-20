@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes } from 'react-icons/fa';
-import AdvertismentTop from './AdvertismentTop';
+import AdvertismentTop from './addvertisment/AdvertismentTop';
 import { useCart } from './context/CartContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -139,11 +139,11 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
         <Link to="/" className="logo" aria-label="Home">
           <div className="logo-wrapper">
             <img
-              src="https://img.icons8.com/?size=100&id=ecFqihp4hbvR&format=png&color=27ae60"
+              src="https://img.icons8.com/?size=100&id=101413&format=png&color=000000"
               alt="Marketplace logo"
               className="logo-image"
             />
-            <h1 className="site-name">Product Donor</h1>
+            <h1 className="text-xl font-weight-700 site-name">Product Donor</h1>
           </div>
         </Link>
 
