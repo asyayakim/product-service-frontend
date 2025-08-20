@@ -1,4 +1,5 @@
 //import { useCart } from '../components/context/CartContext';
+import { useNavigate } from 'react-router-dom';
 import {
   FaTruck,
   FaAward,
@@ -9,7 +10,17 @@ import {
 } from 'react-icons/fa';
 
 export default function AddSection() {
+  const navigate = useNavigate();
 
+  const handleBrowseStores = () => {
+    navigate('/stores'); 
+  };
+
+  const handleShopNow = () => {
+    navigate('/products'); 
+  };
+
+  
 
   return (
     <section id="hero" className="hero section">
@@ -20,8 +31,8 @@ export default function AddSection() {
             <h1 className="hero-title">Buy Food for Those in Need</h1>
             <p className="hero-description">Join us in our mission to provide food for those who need it most. Your support can make a difference!</p>
             <div className="hero-actions" data-aos="fade-up" data-aos-delay="200">
-              <a href="#products" className="btn-primary">Shop Now</a>
-              <a href="#categories" className="btn-secondary">Browse Stores</a>
+                     <button onClick={handleShopNow} className="btn-primary">Shop Now</button>
+              <button onClick={handleBrowseStores} className="btn-secondary">Browse Stores</button>
             </div>
             <div className="features-list" data-aos="fade-up" data-aos-delay="300">
               <div className="feature-item">

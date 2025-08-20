@@ -96,7 +96,7 @@ const ProductCard = ({
             className="product-image"
             loading="lazy"
             onError={(e) => {
-              (e.target as HTMLImageElement).src = 'https://via.placeholder.com/200?text=No+Image';
+              (e.target as HTMLImageElement).src = 'https://img.icons8.com/?size=100&id=-5tLho_7N4sS&format=png&color=6E6E6E';
             }}
           />
           

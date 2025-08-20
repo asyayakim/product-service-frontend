@@ -26,7 +26,6 @@ interface Product {
 
 export default function Store() {
     const { storeId } = useParams<{ storeId: string }>();
-    const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
     const [store, setStore] = useState<any>(null);
     const [loading, setLoading] = useState(true);
@@ -64,14 +63,6 @@ export default function Store() {
             fetchStoreProducts();
         }
     }, [storeId]);
-
-    const handleProductClick = (productId: number) => {
-        navigate(`/product/${productId}`);
-    };
-
-    const formatPrice = (price: number) => {
-        return `$${price.toFixed(2)}`;
-    };
 
     if (loading) return <div className="p-4 text-gray-600">Loading store products...</div>;
     if (error) return <div className="p-4 text-red-600">Error: {error}</div>;
