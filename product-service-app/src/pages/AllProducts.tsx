@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
-import { FaSearch, FaTimes, FaList, FaTh } from 'react-icons/fa';
-import PriceRangeFilter from '../components/main/PriceRangeFilter.tsx';
-import CategoryFilter from '../components/main/CategoryFilter.tsx';
+// import PriceRangeFilter from '../components/main/PriceRangeFilter.tsx';
+// import CategoryFilter from '../components/main/CategoryFilter.tsx';
 interface ApiProduct {
   productId: number;
   imageUrl: string;
@@ -29,11 +28,11 @@ export default function AllProducts() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState('grid');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState('featured');
-  const [priceRange, setPriceRange] = useState('all');
-  const [activeFilters, setActiveFilters] = useState<string[]>([]);
+  // const [viewMode, setViewMode] = useState('grid');
+  // const [searchQuery, setSearchQuery] = useState('');
+  // const [sortBy, setSortBy] = useState('featured');
+  // const [priceRange, setPriceRange] = useState('all');
+  //const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
   const [pagination, setPagination] = useState<PaginationState>({
     page: 1,
@@ -93,27 +92,27 @@ export default function AllProducts() {
     fetchProducts(pagination.page + 1, pagination.pageSize);
   };
 
-  const handlePriceRangeChange = (min: any, max: any) => {
-    setActiveFilters(prev => [
-      ...prev.filter(f => !f.startsWith('$')),
-      `$${min} to $${max}`
-    ]);
-  };
+  // const handlePriceRangeChange = (min: any, max: any) => {
+  //   setActiveFilters(prev => [
+  //     ...prev.filter(f => !f.startsWith('$')),
+  //     `$${min} to $${max}`
+  //   ]);
+  // };
 
-  const handleCategoryChange = (category: string) => {
-    setActiveFilters(prev => [
-      ...prev.filter(f => !f.includes('Category')),
-      category
-    ]);
-  };
+  // const handleCategoryChange = (category: string) => {
+  //   setActiveFilters(prev => [
+  //     ...prev.filter(f => !f.includes('Category')),
+  //     category
+  //   ]);
+  // };
 
-  const removeFilter = (filterToRemove: string) => {
-    setActiveFilters(prev => prev.filter(f => f !== filterToRemove));
-  };
+  // const removeFilter = (filterToRemove: string) => {
+  //   setActiveFilters(prev => prev.filter(f => f !== filterToRemove));
+  // };
 
-  const clearAllFilters = () => {
-    setActiveFilters([]);
-  };
+  // const clearAllFilters = () => {
+  //   setActiveFilters([]);
+  // };
 
   return (
 <div className="container px-4 py-6 mx-auto">
@@ -121,10 +120,10 @@ export default function AllProducts() {
   <div className="flex flex-col gap-6 lg:flex-row">
         {/* Sidebar with filters */}
   <div className="flex flex-col gap-6 lg:w-1/4">
-      <div className="sticky top-6">
+      {/* <div className="sticky top-6">
             <PriceRangeFilter onPriceRangeChange={handlePriceRangeChange} />
             <CategoryFilter onCategoryChange={handleCategoryChange} />
-          </div>
+          </div> */}
         </div> 
 
         {/* Main content */}

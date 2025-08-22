@@ -116,7 +116,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
               placeholder="Search for products, brands..."
               className="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
             />
-            <button className="px-4 py-2 text-white transition-colors bg-green-600 rounded-r-md hover:bg-green-700">
+            <button className="px-4 py-2 text-white transition-colors bg-gray-600 rounded-r-md hover:bg-gray-800">
               <FaSearch />
             </button>
           </div>
@@ -129,7 +129,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
           {/* Stores Section */}
           <div>
             <div className="flex items-center mb-4">
-              <FaStore className="mr-2 text-green-600" />
+              <FaStore className="mr-2 text-gray-600" />
               <h4 className="text-lg font-medium text-gray-800">Stores</h4>
             </div>
 
@@ -158,7 +158,7 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
           {/* Categories Section */}
           <div>
             <div className="flex items-center mb-4">
-              <FaTags className="mr-2 text-green-600" />
+              <FaTags className="mr-2 text-gray-600" />
               <h4 className="text-lg font-medium text-gray-800">Categories</h4>
             </div>
 

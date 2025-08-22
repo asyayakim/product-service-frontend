@@ -1,5 +1,5 @@
 
-import { FaFileDownload, FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 
 const CVAdvertisement = () => {
   const linkedinUrl = "https://www.linkedin.com/in/asia-olsen-557b1b156/"; 

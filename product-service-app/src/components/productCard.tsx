@@ -20,10 +20,10 @@ const ProductCard = ({
   productId,
   imageUrl,
   productName,
-  category,
+  // category,
   brand,
   unitPrice,
-  description,
+  // description,
   store
 }: ProductCardProps) => {
   const {

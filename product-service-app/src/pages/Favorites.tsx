@@ -10,13 +10,13 @@ export default function Favorites() {
     favorites,
     removeFromFavorites,
     clearFavorites,
-    addToBasket,
-    basket
+    // addToBasket,
+    // basket
   } = useCart();
 
-  const isInBasket = (productId: number) => {
-    return basket.some(item => item.productId === productId);
-  };
+  // const isInBasket = (productId: number) => {
+  //   return basket.some(item => item.productId === productId);
+  // };
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('no-NO', {
