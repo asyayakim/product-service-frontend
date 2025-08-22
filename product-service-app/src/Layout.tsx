@@ -1,5 +1,4 @@
-import { useLocation } from 'react-router-dom';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from "react-router-dom";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ChatSearchWidget from './components/ChatSearchWidget';
@@ -8,7 +7,7 @@ import './App.css';
 
 function Layout() {
   const location = useLocation();
-  const hideNavbarRoutes = ["/login", "/signUp", "/payment", "/login/restorePassword"];
+  const hideNavbarRoutes = [ "/payment", "/login/restorePassword"];
   const hideFooterRoutes = ["/login", "/signUp", "/payment", "/login/restorePassword"];
   
 

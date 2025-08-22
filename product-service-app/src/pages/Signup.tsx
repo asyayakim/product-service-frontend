@@ -101,7 +101,7 @@ export default function Register() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
+    <main className="min-h-screen">
       
       <section id="register" className="relative px-4 py-16 sm:px-6 lg:px-8">
         <div className="absolute w-16 h-16 bg-blue-200 rounded-full opacity-50 top-20 left-10"></div>
@@ -118,7 +118,7 @@ export default function Register() {
             </p>
           </div>
 
-          <div className="max-w-2xl mx-auto overflow-hidden bg-white shadow-xl rounded-2xl">
+          <div className="max-w-2xl mx-auto overflow-hidden bg-white border-2 rounded-2xl">
             <div className="p-8 sm:p-10">
               <form onSubmit={handleSubmit}>
 

@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { UserContext } from "./context/UserProvider";
 
 import CommonHeader from "./CommonHeader";
+import Breadcrumbs from "./Breadcrumbs";
 
 
 export default function Header() {
@@ -22,7 +23,10 @@ export default function Header() {
             case "guest":
                 return (
                     <header className="sticky top-0 z-50 border-gray-200 shadow">
-                        <CommonHeader user={user} logout={logout}/>
+                        <CommonHeader user={user} logout={logout} />
+                        <div className="light-background">
+                            <Breadcrumbs />
+                        </div>
                     </header>
                 )
             case "User":

@@ -50,7 +50,7 @@ export default function Login() {
 
   return (
     <main className="main">
-      <div className="page-title light-background">
+      {/* <div className="page-title light-background">
         <div className="container d-lg-flex justify-content-between align-items-center">
           <h1 className="mb-2 mb-lg-0">Login</h1>
           <nav className="breadcrumbs">
@@ -60,7 +60,7 @@ export default function Login() {
             </ol>
           </nav>
         </div>
-      </div>
+      </div> */}
 
       <section id="login" className="py-12">
         <div className="max-w-6xl px-4 mx-auto">
