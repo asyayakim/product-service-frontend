@@ -4,6 +4,7 @@ import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes, FaStore, 
 import AdvertismentTop from '../addvertisment/AdvertismentTop';
 import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../apiConfig';
 
 type CommonHeaderProps = {
   user: any;
@@ -38,8 +39,8 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
         setError(null);
 
         const [storesResponse, categoriesResponse] = await Promise.all([
-          fetch(`http://localhost:5001/api/stores/store-names`),
-          fetch(`http://localhost:5001/api/categories`)
+          fetch(`${API_BASE_URL}/api/stores/store-names`),
+          fetch(`${API_BASE_URL}/api/categories`)
         ]);
 
         if (!storesResponse.ok) {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import  ProductCard from '../components/productCard';
+import { API_BASE_URL } from './Login';
 interface Product {
     productId: number;
     imageUrl: string;
@@ -36,7 +37,7 @@ export default function Store() {
         const fetchStoreProducts = async () => {
             try {
                 setLoading(true);
-                const response = await fetch(`http://localhost:5001/api/stores/products-from-store/${storeId}`);
+                const response = await fetch(`${API_BASE_URL}/api/stores/products-from-store/${storeId}`);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);

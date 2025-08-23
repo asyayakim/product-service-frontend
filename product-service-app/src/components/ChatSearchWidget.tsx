@@ -1,6 +1,7 @@
 // src/components/ChatSearchWidget.tsx
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { EMBEDDING_API_URL } from '../apiConfig';
 
 interface SearchResult {
   text: string;
@@ -16,8 +17,6 @@ export default function ChatSearchWidget() {
   const [messages, setMessages] = useState<{text: string, isUser: boolean}[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
-
-  // Auto-scroll to bottom when new messages are added
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -37,7 +36,7 @@ export default function ChatSearchWidget() {
     setQuery('');
     
     try {
-     const response = await axios.post<SearchResult[]>('http://localhost:5050/search', {
+     const response = await axios.post<SearchResult[]>(`${EMBEDDING_API_URL}/search`, {
        query
    });
 

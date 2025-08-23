@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CVAdvertisement from '../components/addvertisment/CVAdvertisement';
+import { API_BASE_URL } from './Login';
 
 interface Store {
     storeId: number;
@@ -20,7 +21,7 @@ export default function StoresPage() {
         const fetchStores = async () => {
             try {
                 setLoading(true);
-                const response = await fetch('http://localhost:5001/api/stores/store-names');
+                const response = await fetch(`${API_BASE_URL}/api/stores/store-names`);
 
                 if (!response.ok) {
                     throw new Error(`Failed to fetch stores: ${response.status}`);

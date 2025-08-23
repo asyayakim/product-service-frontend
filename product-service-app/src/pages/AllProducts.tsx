@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
+import { API_BASE_URL } from './Login.tsx';
 // import PriceRangeFilter from '../components/main/PriceRangeFilter.tsx';
 // import CategoryFilter from '../components/main/CategoryFilter.tsx';
 interface ApiProduct {
@@ -51,7 +52,7 @@ export default function AllProducts() {
       }
 
       const response = await fetch(
-        `http://localhost:5001/api/products/products-frontend?pageNumber=${page}&pageSize=${pageSize}`
+        `${API_BASE_URL}/api/products/products-frontend?pageNumber=${page}&pageSize=${pageSize}`
       );
 
       if (!response.ok) {

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
 import AddSection from '../components/addvertisment/AddSection.tsx';
 import BestSellers from '../components/addvertisment/BestSellers.tsx';
+import { API_BASE_URL } from './Login.tsx';
 
 interface ApiProduct {
   productId: number;
@@ -45,7 +46,7 @@ export default function MainView() {
       }
 
       const response = await fetch(
-        `http://localhost:5001/api/products/products-frontend?pageNumber=${page}&pageSize=${pageSize}`
+        `${API_BASE_URL}/api/products/products-frontend?pageNumber=${page}&pageSize=${pageSize}`
       );
       
       if (!response.ok) {

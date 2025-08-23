@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../apiConfig';
 
 interface SearchResult {
   text: string;
@@ -17,8 +18,8 @@ export default function Search() {
     
     setLoading(true);
     try {
-  
-      const response = await axios.post<SearchResult[]>('http://localhost:5050/search', {
+
+      const response = await axios.post<SearchResult[]>(`${API_BASE_URL}/search`, {
         query
    });
 

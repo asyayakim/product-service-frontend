@@ -1,6 +1,7 @@
 import { FaHeart, FaExchangeAlt, FaSearch, FaStar, FaRegStar, FaStarHalfAlt, FaShoppingCart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { API_BASE_URL } from '../../apiConfig';
 
 interface ProductDetails {
   productId: number;
@@ -33,7 +34,7 @@ export default function BestSellers() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:5001/api/products/top-sellers');
+        const response = await fetch(`${API_BASE_URL}/api/products/top-sellers`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

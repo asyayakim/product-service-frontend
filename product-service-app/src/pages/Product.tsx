@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { API_BASE_URL } from './Login';
 
 interface ProductDetails {
   productId: number;
@@ -30,8 +31,8 @@ export default function Product() {
     const fetchProduct = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:5001/api/products/${productId}`);
-        
+        const response = await fetch(`${API_BASE_URL}/api/products/${productId}`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
