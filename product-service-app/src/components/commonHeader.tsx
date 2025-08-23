@@ -265,5 +265,4 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
     </header>
   );
 };
-
 export default CommonHeader;
