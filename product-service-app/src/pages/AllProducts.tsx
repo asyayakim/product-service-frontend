@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
-import { API_BASE_URL } from './Login.tsx';
+import { API_BASE_URL } from '../apiConfig';
 // import PriceRangeFilter from '../components/main/PriceRangeFilter.tsx';
 // import CategoryFilter from '../components/main/CategoryFilter.tsx';
 interface ApiProduct {

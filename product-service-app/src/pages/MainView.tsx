@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ProductCard from '../components/productCard.tsx';
 import AddSection from '../components/addvertisment/AddSection.tsx';
 import BestSellers from '../components/addvertisment/BestSellers.tsx';
-import { API_BASE_URL } from './Login.tsx';
+import { API_BASE_URL } from '../apiConfig';
 
 interface ApiProduct {
   productId: number;

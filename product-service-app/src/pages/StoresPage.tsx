@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CVAdvertisement from '../components/addvertisment/CVAdvertisement';
-import { API_BASE_URL } from './Login';
+import { API_BASE_URL } from '../apiConfig';
 
 interface Store {
     storeId: number;

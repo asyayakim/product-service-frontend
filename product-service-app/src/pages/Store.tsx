@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import  ProductCard from '../components/productCard';
-import { API_BASE_URL } from './Login';
+import { API_BASE_URL } from '../apiConfig';
 interface Product {
     productId: number;
     imageUrl: string;

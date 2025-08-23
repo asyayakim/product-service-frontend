@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaGoogle, FaFacebook, FaApple, FaEye, FaEyeSlash } from "react-icons/fa";
-import { API_BASE_URL } from "./Login";
+import { API_BASE_URL } from "../apiConfig";
 
 export default function Register() {
   const navigate = useNavigate();
