@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes, FaStore, FaTags } from 'react-icons/fa';
-import AdvertismentTop from './addvertisment/AdvertismentTop';
-import { useCart } from './context/CartContext';
+import AdvertismentTop from '../addvertisment/AdvertismentTop';
+import { useCart } from '../context/CartContext';
 import { useNavigate } from 'react-router-dom';
 
 type CommonHeaderProps = {
@@ -19,7 +19,7 @@ interface Category {
   categoryId: number;
 }
 
-const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
+export default function CommonHeader({ user, logout }: CommonHeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [stores, setStores] = useState<Store[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -265,4 +265,4 @@ const CommonHeader = ({ user, logout }: CommonHeaderProps) => {
     </header>
   );
 };
-export default CommonHeader;
+
