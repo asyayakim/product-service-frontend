@@ -28,7 +28,7 @@ export default function BestSellers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { addToBasket, addToFavorites, favorites } = useCart();
-
+  const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -42,6 +42,8 @@ export default function BestSellers() {
 
         const data = await response.json();
         setProducts(data);
+        // Initialize all cards as not visible
+        setVisibleCards(new Array(data.length).fill(false));
       } catch (err) {
         if (err instanceof Error) {
           setError(err.message);
@@ -55,6 +57,23 @@ export default function BestSellers() {
 
     fetchProducts();
   }, []);
+
+  // Animation effect for cards
+  useEffect(() => {
+    if (products.length > 0) {
+      const timer = setTimeout(() => {
+        const newVisibleCards = [...visibleCards];
+        products.forEach((_, index) => {
+          setTimeout(() => {
+            newVisibleCards[index] = true;
+            setVisibleCards([...newVisibleCards]);
+          }, index * 100); // Stagger the animations
+        });
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [products.length]);
 
   const renderStars = (rating: number) => {
     const stars = [];
@@ -104,9 +123,22 @@ export default function BestSellers() {
         </p>
       </div>
 
-      <section id="best-sellers" className="grid grid-cols-1 gap-8 px-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4" data-aos="fade-up" data-aos-delay="100">
-        {products.map((product) => (
-          <div key={product.productId} className="overflow-hidden transition-all duration-300 bg-white rounded-xl hover:shadow-xl">
+      <section id="best-sellers" className="grid grid-cols-1 gap-8 px-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {products.map((product, index) => (
+          <div 
+            key={product.productId} 
+            className={`
+              overflow-hidden transition-all duration-300 bg-white rounded-xl hover:shadow-xl
+              transform transition-transform duration-500 ease-out
+              ${visibleCards[index] 
+                ? 'translate-y-0 opacity-100' 
+                : 'translate-y-10 opacity-0'
+              }
+            `}
+            style={{
+              transitionDelay: `${index * 100}ms`,
+            }}
+          >
             <div className="relative flex items-center justify-center h-48 group">
               <div className="absolute z-10 px-3 py-1 text-xs font-bold text-white bg-red-500 rounded-full top-4 left-4">
                 Popular
@@ -163,7 +195,6 @@ export default function BestSellers() {
                 >
                   <FaShoppingCart className="text-lg" />
                 </button>
-
               </div>
             </div>
           </div>

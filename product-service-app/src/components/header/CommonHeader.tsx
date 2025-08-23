@@ -40,7 +40,7 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
 
         const [storesResponse, categoriesResponse] = await Promise.all([
           fetch(`${API_BASE_URL}/api/stores/store-names`),
-          fetch(`${API_BASE_URL}/api/categories`)
+          fetch(`${API_BASE_URL}/api/stores/categories`)
         ]);
 
         if (!storesResponse.ok) {
