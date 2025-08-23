@@ -80,7 +80,7 @@ export default function Favorites() {
                   >
                     <FaHeart className="text-sm text-red-500" />
                   </button>
-                  <span className="absolute right-0 p-2 text-sm text-gray-500 top-8 right-1">Saved</span>
+                  <span className="absolute p-2 text-sm text-gray-500 top-8 right-1">Saved</span>
                 </div>
 
                 <div className="p-4">
