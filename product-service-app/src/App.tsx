@@ -1,4 +1,4 @@
-import {Route, Routes} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import './App.css'
 import Layout from "./Layout";
 import UserProvider from "./components/context/UserProvider";
@@ -11,27 +11,30 @@ import Favorites from "./pages/Favorites";
 import Store from "./pages/Store";
 import StoresPage from "./pages/StoresPage";
 import AllProducts from "./pages/AllProducts";
+import SearchResults from "./components/search/SearchResults";
 
 
 export default function App() {
     return (
         <UserProvider>
             <Routes>
-                <Route path="/" element={<Layout/>}>
-                    <Route index element={<MainView/>}/>
-                    <Route path="register" element={<SignUp/>}/>
+                <Route path="/" element={<Layout />}>
+                    <Route index element={<MainView />} />
+                    <Route path="register" element={<SignUp />} />
                     <Route path="login" element={<Login />} />
                     {/* <Route path="payment" element={<p>Payment Page</p>} />
                     <Route path="login/restorePassword" element={<p>Restore Password Page</p>} /> */}
-                    <Route path="/products" element={<MainView/>}/>
+                    <Route path="/products" element={<MainView />} />
                     <Route path="/products/:productId" element={<Product />} />
                     <Route path="/basket" element={<Basket />} />
                     <Route path="/favorite" element={<Favorites />} />
                     <Route path="/store/:storeId" element={<Store />} />
                     <Route path="/stores" element={<StoresPage />} />
                     <Route path="/all-products" element={<AllProducts />} />
+                    <Route path="/all-products/:category" element={<AllProducts />} />
+                    <Route path="/search" element={<SearchResults />} />
 
-                    <Route path="*" element={<p>404 - Page not found</p>}/>
+                    <Route path="*" element={<p>404 - Page not found</p>} />
                 </Route>
             </Routes>
         </UserProvider>

@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from './components/Header';
 import Footer from './components/Footer';
-import ChatSearchWidget from './components/ChatSearchWidget';
+import ChatSearchWidget from '../src/components/search/ChatSearchWidget';
 import { useState, useEffect } from 'react';
 import './App.css';
 

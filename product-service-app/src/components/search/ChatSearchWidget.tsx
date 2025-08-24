@@ -1,7 +1,7 @@
 // src/components/ChatSearchWidget.tsx
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { EMBEDDING_API_URL } from '../apiConfig';
+import { EMBEDDING_API_URL } from '../../apiConfig';
 
 interface SearchResult {
   text: string;

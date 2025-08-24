@@ -1,34 +1,30 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes, FaStore, FaTags } from 'react-icons/fa';
 import AdvertismentTop from '../addvertisment/AdvertismentTop';
 import { useCart } from '../context/CartContext';
-import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../apiConfig';
 
 type CommonHeaderProps = {
   user: any;
   logout: () => void;
 };
+
 interface Store {
   storeId: number;
   name: string;
   description: string;
 }
-interface Category {
-  name: string;
-  categoryId: number;
-}
 
 export default function CommonHeader({ user, logout }: CommonHeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [stores, setStores] = useState<Store[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { favorites, basket } = useCart();
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,7 +36,7 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
 
         const [storesResponse, categoriesResponse] = await Promise.all([
           fetch(`${API_BASE_URL}/api/stores/store-names`),
-          fetch(`${API_BASE_URL}/api/stores/categories`)
+          fetch(`${API_BASE_URL}/api/products/categories`)
         ]);
 
         if (!storesResponse.ok) {
@@ -71,17 +67,23 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
     return () => { document.body.style.overflow = 'auto'; };
   }, [isSearchOpen]);
 
-
   const handleStoreClick = (storeId: number) => {
     setIsSearchOpen(false);
     navigate(`/store/${storeId}`);
-
-    console.log(`Navigating to store with ID: ${storeId}`);
   };
 
-  const handleCategoryClick = (categoryId: number) => {
+  const handleCategoryClick = (category: string) => {
     setIsSearchOpen(false);
-    navigate(`/category/${categoryId}`);
+    navigate(`/all-products/${category}`);
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setIsSearchOpen(false);
+      navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
   };
 
   return (
@@ -109,44 +111,48 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
           </button>
         </div>
 
-
         <div className="h-full p-5 overflow-y-auto">
-          <div className="flex mb-6">
+          <form onSubmit={handleSearch} className="flex mb-6">
             <input
               type="text"
               placeholder="Search for products, brands..."
               className="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <button className="px-4 py-2 text-white transition-colors bg-gray-600 rounded-r-md hover:bg-gray-800">
+            <button 
+              type="submit"
+              className="px-4 py-2 text-white transition-colors bg-gray-600 rounded-r-md hover:bg-gray-800"
+            >
               <FaSearch />
             </button>
-          </div>
+          </form>
 
           {error && (
             <div className="p-3 mb-4 text-red-700 rounded-md bg-red-50">
               {error}
             </div>
           )}
+          
           {/* Stores Section */}
           <div>
             <div className="flex items-center mb-4">
               <FaStore className="mr-2 text-gray-600" />
-              <h4 className="text-lg font-medium text-gray-800">Stores</h4>
+              <h4 className="text-lg font-medium text-gray-800 border-b-2">Stores</h4>
             </div>
 
             {loading ? (
               <div className="py-4 text-center text-gray-500">Loading stores...</div>
             ) : (
-              <div className="grid grid-cols-1 gap-3">
+              <div className="flex flex-wrap gap-2">
                 {stores.length > 0 ? (
                   stores.map(store => (
                     <div
                       key={store.storeId}
-                      className="p-4 transition-all border border-gray-200 rounded-lg cursor-pointer hover:shadow-md hover:border-green-300"
+                      className="transition-all cursor-pointer px-3 py-1.5 bg-gray-100 rounded-full hover:bg-blue-100 hover:text-blue-700"
                       onClick={() => handleStoreClick(store.storeId)}
                     >
-                      <h5 className="mb-1 font-medium text-gray-800">{store.name}</h5>
-                      <p className="text-sm text-gray-600 line-clamp-2">{store.description}</p>
+                     <h5 className="text-sm font-medium text-gray-800 hover:text-blue-700">{store.name}</h5>
                     </div>
                   ))
                 ) : (
@@ -158,34 +164,33 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
 
           {/* Categories Section */}
           <div>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center pt-2 mb-4">
               <FaTags className="mr-2 text-gray-600" />
-              <h4 className="text-lg font-medium text-gray-800">Categories</h4>
+              <h4 className="text-lg font-medium text-gray-800 border-b-2">Categories</h4>
             </div>
 
             {loading ? (
               <div className="py-4 text-center text-gray-500">Loading categories...</div>
             ) : (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-wrap gap-2">
                 {categories.length > 0 ? (
                   categories.map(category => (
                     <div
-                      key={category.categoryId}
-                      className="p-3 transition-all border border-gray-200 rounded-lg cursor-pointer hover:shadow-md hover:border-green-300"
-                      onClick={() => handleCategoryClick(category.categoryId)}
+                      key={category}
+                      className="transition-all cursor-pointer px-3 py-1.5 bg-gray-100 rounded-full hover:bg-blue-100 hover:text-blue-700"
+                      onClick={() => handleCategoryClick(category)}
                     >
-                      <h5 className="text-sm font-medium text-gray-800">{category.name}</h5>
+                      <h5 className="text-sm font-medium text-gray-800 hover:text-blue-700">{category}</h5>
                     </div>
                   ))
                 ) : (
-                  <div className="col-span-2 py-4 text-center text-gray-500">No categories found</div>
+                  <div className="w-full py-4 text-center text-gray-500">No categories found</div>
                 )}
               </div>
             )}
           </div>
         </div>
       </div>
-
 
       <div className="header-container">
         <Link to="/" className="logo" aria-label="Home">
@@ -266,4 +271,3 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
     </header>
   );
 };
-
