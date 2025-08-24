@@ -42,8 +42,6 @@ a:hover {
 }
 
 .basket-button {
-  background: #f8f9fa;
-  border: 1px solid #e1e5e9;
   border-radius: 5px;
   width: 32px;
   height: 32px;
@@ -51,13 +49,12 @@ a:hover {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #27ae60;
+  color: gray;
   transition: all 0.2s ease;
 }
 
 .basket-button:hover {
-  background: #27ae60;
-  color: white;
+  color: black;
   transform: scale(1.05);
 }
 
@@ -155,7 +152,7 @@ a:hover {
 .price {
   font-weight: 700;
   font-size: 1rem;
-  color: var(--price-color);
+  color: var(--text-primary);
   margin: 5px 0;
 }
 

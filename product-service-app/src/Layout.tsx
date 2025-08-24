@@ -31,11 +31,6 @@ function Layout() {
       <main className="flex-grow">
         <Outlet />
       </main>
-      {!hideFooterRoutes.includes(location.pathname) && (
-        <div className={`${isMobile ? 'hidden' : 'block'}`}>
-          <Footer />
-        </div>
-      )}
       {!hideFooterRoutes.includes(location.pathname) && !isMobile && <Footer />}
       <ChatSearchWidget />
     </div>
