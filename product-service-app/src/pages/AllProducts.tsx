@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../components/productCard';
 import { API_BASE_URL } from '../apiConfig';
@@ -25,6 +25,10 @@ interface PaginationState {
   hasMore: boolean;
 }
 
+interface PriceRange {
+  min: number;
+  max: number;
+}
 
 export default function AllProducts() {
   const { category } = useParams<{ category: string }>();
@@ -32,9 +36,9 @@ export default function AllProducts() {
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeFilter, setActiveFilter] = useState<string>(category || '');
+  const [activeCategory, setActiveCategory] = useState(category || '');
+  const [priceRange, setPriceRange] = useState<PriceRange | null>(null);
   const navigate = useNavigate();
-
 
   const [pagination, setPagination] = useState<PaginationState>({
     page: 1,
@@ -42,7 +46,7 @@ export default function AllProducts() {
     hasMore: true
   });
 
-  const fetchProducts = async (page: number, pageSize: number, categoryFilter: string = '') => {
+  const fetchProducts = async (page: number, pageSize: number, categoryFilter: string = '', priceFilter: PriceRange | null = null) => {
     try {
       const isInitialLoad = page === 1;
       if (isInitialLoad) {
@@ -52,10 +56,12 @@ export default function AllProducts() {
         setLoadingMore(true);
       }
 
-      let url = `${API_BASE_URL}/api/products/products-frontend?pageNumber=${page}&pageSize=${pageSize}`;
-
+      let url = `${API_BASE_URL}/api/products/products-by-category?pageNumber=${page}&pageSize=${pageSize}`;
       if (categoryFilter) {
-        url = `${API_BASE_URL}/api/products/products-by-category?category=${encodeURIComponent(categoryFilter)}&pageNumber=${page}&pageSize=${pageSize}`;
+        url += `&category=${encodeURIComponent(categoryFilter)}`;
+      }
+      if (priceFilter) {
+        url += `&minPrice=${priceFilter.min}&maxPrice=${priceFilter.max}`;
       }
 
       const response = await fetch(url);
@@ -91,67 +97,98 @@ export default function AllProducts() {
   };
 
   useEffect(() => {
-
-    setActiveFilter(category || '');
-    fetchProducts(1, pagination.pageSize, category || '');
-  }, [category]);
+    setActiveCategory(category || '');
+    fetchProducts(1, pagination.pageSize, category || '', priceRange);
+  }, [category, priceRange]);
 
   const handleLoadMore = () => {
-    fetchProducts(pagination.page + 1, pagination.pageSize, activeFilter);
+    fetchProducts(pagination.page + 1, pagination.pageSize, activeCategory, priceRange);
   };
 
-  const handleCategoryChange = (newFilter: string) => {
-    const updatedFilter = activeFilter === newFilter ? '' : newFilter;
-    setActiveFilter(updatedFilter);
+  const handleCategoryChange = (newCategory: string) => {
+    const updatedCategory = activeCategory === newCategory ? '' : newCategory;
+    setActiveCategory(updatedCategory);
 
-    if (updatedFilter) {
-      navigate(`/all-products/${encodeURIComponent(updatedFilter)}`);
+    if (updatedCategory) {
+      navigate(`/all-products/${updatedCategory}`);
     } else {
       navigate('/all-products');
     }
-
-    fetchProducts(1, pagination.pageSize, updatedFilter);
   };
 
+  const handlePriceRangeChange = (min: number, max: number) => {
+    setPriceRange({ min, max });
+    setPagination(prev => ({ ...prev, page: 1 }));
+  };
 
   const clearCategoryFilter = () => {
-    setActiveFilter('');
+    setActiveCategory('');
     navigate('/all-products');
-    fetchProducts(1, pagination.pageSize, '');
   };
 
+  const clearPriceFilter = () => {
+    setPriceRange(null);
+  };
+
+  const clearAllFilters = () => {
+    setActiveCategory('');
+    setPriceRange(null);
+    navigate('/all-products');
+  };
+
+  const hasActiveFilters = activeCategory || priceRange;
 
   return (
     <div className="container px-4 py-6 mx-auto">
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="flex flex-col gap-6 lg:w-1/4">
           <div className="sticky top-6">
-            <CategoryFilter
-              onCategoryChange={handleCategoryChange}
-              activeCategory={activeFilter}
+            <CategoryFilter 
+              onCategoryChange={handleCategoryChange} 
+              activeCategory={activeCategory}
             />
-            {/* <PriceRangeFilter onPriceRangeChange={handlePriceRangeChange} /> */}
-
-
-          </div>
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">
-              {activeFilter ? `Filtered by: ${activeFilter}` : 'All Products'}
-            </h2>
-
-
-            {activeFilter && (
-              <button
-                onClick={clearCategoryFilter}
-                className="px-4 py-2 text-sm text-gray-600 transition-colors bg-gray-100 rounded-md hover:bg-gray-200"
-              >
-                Clear Filter
-              </button>
+            <PriceRangeFilter onPriceRangeChange={handlePriceRangeChange} />
+            
+            {hasActiveFilters && (
+              <div className="p-3 mt-4 border rounded bg-gray-50">
+                <h4 className="mb-3 widget-title h5">Active Filters</h4>
+                <div className="flex flex-wrap gap-2">
+                  {activeCategory && (
+                    <span className="px-2 py-1 text-sm bg-blue-100 rounded-full">
+                      Category: {activeCategory}
+                      <button 
+                        onClick={clearCategoryFilter}
+                        className="ml-1 text-gray-600 hover:text-blue-800"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  )}
+                  {priceRange && (
+                    <span className="px-2 py-1 text-sm bg-green-100 rounded-full">
+                      Price: ${priceRange.min} - ${priceRange.max}
+                      <button 
+                        onClick={clearPriceFilter}
+                        className="p-2 ml-1 text-green-600 hover:text-green-800"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  )}
+                </div>
+                <button 
+                  onClick={clearAllFilters}
+                  className="w-full px-3 py-2 mt-2 text-sm text-white bg-red-500 rounded hover:bg-red-600"
+                >
+                  Clear All Filters
+                </button>
+              </div>
             )}
           </div>
+        </div>
 
+        <div className="flex-1">
+          
           {loading ? (
             <div className="flex items-center justify-center h-64">
               <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
@@ -162,7 +199,7 @@ export default function AllProducts() {
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:p-12 sm:gap-8 md:grid-cols-3 lg:grid-cols-4">
+              <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 sm:p-3 sm:gap-12 md:grid-cols-3 lg:grid-cols-4">
                 {products.map(product => (
                   <div key={product.productId}>
                     <ProductCard
@@ -178,7 +215,7 @@ export default function AllProducts() {
                   </div>
                 ))}
               </div>
-
+              
               {pagination.hasMore && (
                 <div className="mt-8 text-center">
                   <button
@@ -196,5 +233,4 @@ export default function AllProducts() {
       </div>
     </div>
   );
-};
-
+}

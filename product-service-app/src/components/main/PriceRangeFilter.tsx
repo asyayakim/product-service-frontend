@@ -23,8 +23,8 @@ const PriceRangeFilter = ({ onPriceRangeChange }: { onPriceRangeChange: (min: nu
       <h3 className="mb-3 widget-title h5">Price Range</h3>
       <div className="price-range-container">
         <div className="mb-3 current-range d-flex justify-content-between">
-          <span className="min-price fw-bold">${minPrice}</span>
-          <span className="max-price fw-bold">${maxPrice}</span>
+          <span className="min-price fw-bold">kr{minPrice}</span>-
+          <span className="max-price fw-bold">kr{maxPrice}</span>
         </div>
 
         <div className="mb-3 range-slider position-relative" style={{ height: '5px' }}>
@@ -64,7 +64,7 @@ const PriceRangeFilter = ({ onPriceRangeChange }: { onPriceRangeChange: (min: nu
           <div className="row g-2">
             <div className="col-6">
               <div className="input-group input-group-sm">
-                <span className="input-group-text">$</span>
+                <span className="input-group-text">kr - </span>
                 <input 
                   type="number" 
                   className="form-control min-price-input" 
@@ -79,7 +79,7 @@ const PriceRangeFilter = ({ onPriceRangeChange }: { onPriceRangeChange: (min: nu
             </div>
             <div className="col-6">
               <div className="input-group input-group-sm">
-                <span className="input-group-text">$</span>
+                <span className="input-group-text">kr - </span>
                 <input 
                   type="number" 
                   className="form-control max-price-input" 
@@ -96,7 +96,7 @@ const PriceRangeFilter = ({ onPriceRangeChange }: { onPriceRangeChange: (min: nu
         </div>
 
         <div className="mt-3 filter-actions">
-          <button type="button" className="btn btn-sm btn-primary w-100" onClick={applyFilter}>
+          <button type="button" className="rounded border-radius btn-primary w-100 " onClick={applyFilter}>
             Apply Filter
           </button>
         </div>
