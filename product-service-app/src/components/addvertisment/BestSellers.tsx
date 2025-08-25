@@ -42,7 +42,6 @@ export default function BestSellers() {
 
         const data = await response.json();
         setProducts(data);
-        // Initialize all cards as not visible
         setVisibleCards(new Array(data.length).fill(false));
       } catch (err) {
         if (err instanceof Error) {
@@ -58,7 +57,7 @@ export default function BestSellers() {
     fetchProducts();
   }, []);
 
-  // Animation effect for cards
+
   useEffect(() => {
     if (products.length > 0) {
       const timer = setTimeout(() => {
@@ -67,7 +66,7 @@ export default function BestSellers() {
           setTimeout(() => {
             newVisibleCards[index] = true;
             setVisibleCards([...newVisibleCards]);
-          }, index * 100); // Stagger the animations
+          }, index * 10);
         });
       }, 100);
       
@@ -123,7 +122,7 @@ export default function BestSellers() {
         </p>
       </div>
 
-      <section id="best-sellers" className="grid grid-cols-1 gap-8 px-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <section id="best-sellers" className="grid grid-cols-1 gap-8 px-12 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
         {products.map((product, index) => (
           <div 
             key={product.productId} 

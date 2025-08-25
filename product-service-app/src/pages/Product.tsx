@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../apiConfig';
+import { useCart } from '../components/context/CartContext';
+import { FaRegHeart, FaHeart, FaShoppingBasket, FaArrowLeft } from 'react-icons/fa';
 
 interface ProductDetails {
   productId: number;
@@ -26,6 +28,16 @@ export default function Product() {
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+  
+  const {
+    favorites,
+    basket,
+    addToFavorites,
+    removeFromFavorites,
+    addToBasket,
+    removeFromBasket
+  } = useCart();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -36,7 +48,7 @@ export default function Product() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const data = await response.json();
         setProduct(data);
       } catch (err) {
@@ -55,72 +67,166 @@ export default function Product() {
     }
   }, [productId]);
 
-  if (loading) return <div className="flex items-center justify-center">
-                            <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                            </svg>
-                            Loading...
-                          </div>;
-  if (error) return <div className="error">Error: {error}</div>;
-  if (!product) return <div className="no-product">Product not found</div>;
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+      <span className="ml-4">Loading product details...</span>
+    </div>
+  );
+  
+  if (error) return (
+    <div className="container p-4 mx-auto">
+      <div className="px-4 py-3 text-red-700 bg-red-100 border border-red-400 rounded">
+        Error: {error}
+      </div>
+      <button 
+        onClick={() => navigate(-1)} 
+        className="flex items-center mt-4 text-blue-600 hover:text-blue-800"
+      >
+        <FaArrowLeft className="mr-2" /> Go back
+      </button>
+    </div>
+  );
+  
+  if (!product) return (
+    <div className="container p-4 mx-auto">
+      <div className="px-4 py-3 text-yellow-700 bg-yellow-100 border border-yellow-400 rounded">
+        Product not found
+      </div>
+      <button 
+        onClick={() => navigate(-1)} 
+        className="flex items-center mt-4 text-blue-600 hover:text-blue-800"
+      >
+        <FaArrowLeft className="mr-2" /> Go back
+      </button>
+    </div>
+  );
+
+  const isFavorite = favorites.some(item => item.productId === product.productId);
+  const isInBasket = basket.some(item => item.productId === product.productId);
+
+  const handleFavoriteClick = () => {
+    if (isFavorite) {
+      removeFromFavorites(product.productId);
+    } else {
+      addToFavorites({
+        productId: product.productId,
+        imageUrl: product.imageUrl,
+        productName: product.productName,
+        brand: product.brand,
+        unitPrice: product.unitPrice,
+        store: product.store
+      });
+    }
+  };
+
+  const handleBasketClick = () => {
+    if (isInBasket) {
+      removeFromBasket(product.productId);
+    } else {
+      addToBasket({
+        productId: product.productId,
+        imageUrl: product.imageUrl,
+        productName: product.productName,
+        brand: product.brand,
+        unitPrice: product.unitPrice,
+        store: product.store
+      });
+    }
+  };
 
   return (
-    <div className="product-detail-page">
-      <Link to="/" className="back-link">&larr; Back to products</Link>
-      
-      <div className="product-detail-container">
-        <div className="product-image-section">
-          <img 
-            src={product.imageUrl} 
-            alt={product.productName} 
-            className="detail-image"
+    <div className="container max-w-6xl p-4 mx-auto">
+      <Link to="/" className="inline-flex items-center mb-6 text-blue-600 hover:text-blue-800">
+        <FaArrowLeft className="mr-2" /> Back to products
+      </Link>
+
+      <div className="grid grid-cols-1 gap-8 p-8 md:grid-cols-2">
+        <div className="p-4 bg-white rounded-lg ">
+          <img
+            src={product.imageUrl}
+            alt={product.productName}
+            className="w-64 h-auto mx-auto rounded-lg"
             onError={(e) => {
               (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400?text=No+Image';
             }}
           />
         </div>
-        
-        <div className="product-info-section">
-          <h1>{product.productName}</h1>
-          <div className="brand">{product.brand}</div>
-          
-          <div className="price">{product.unitPrice.toFixed(2)} kr</div>
-          
-          <div className="store-info-main">
-            <img 
-              src={product.store.logo} 
-              alt={product.store.name} 
-              className="store-logo-main"
+        <div className="p-6 bg-white border-t border-b md:border md:rounded-lg md:border-t-0">
+          <h1 className="p-2 mb-6 text-4xl font-bold border-b">{product.productName}</h1>
+          <div className="mb-4 text-gray-600">{product.brand}</div>
+
+          <div className="mb-6 text-2xl font-bold text-green-700">{product.unitPrice.toFixed(2)} kr</div>
+
+          <div className="flex items-center mb-6">
+            <img
+              src={product.store.logo}
+              alt={product.store.name}
+              className="w-10 h-10 mr-3 rounded-full"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://via.placeholder.com/40?text=Store';
+              }}
             />
-            <span>Available at {product.store.name}</span>
+            <span className="text-gray-700">Available at {product.store.name}</span>
           </div>
-          
-          <div className="description">
-            <h2>Description</h2>
-            <p>{product.description}</p>
+
+          <div className="flex mb-6 space-x-4">
+            <button
+              className={`flex items-center justify-center px-4 py-2 rounded-lg ${
+                isInBasket 
+                  ? ' text-gray-500 hover:text-red-600' 
+                  : ' text-gray-500 hover:text-green-600'
+              } transition-colors`}
+              onClick={handleBasketClick}
+            >
+              <FaShoppingBasket className="mr-2" />
+              {isInBasket ? 'Remove from Basket' : 'Add to Basket'}
+            </button>
+            
+            <button
+              className={`flex items-center justify-center px-4 py-2 rounded-lg ${
+                isFavorite 
+                  ? ' text-gray-500 hover:text-pink-500' 
+                  : ' text-gray-500 hover:text-gray-500'
+              } transition-colors`}
+              onClick={handleFavoriteClick}
+            >
+              {isFavorite ? <FaHeart className="mr-2 text-red-500" /> : <FaRegHeart className="mr-2" />}
+              {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+            </button>
           </div>
-          
-          <div className="ingredients">
-            <h2>Ingredients</h2>
-            <p>{product.ingredients}</p>
+
+          <div className="mb-6">
+            <h2 className="mb-2 text-xl font-semibold">Description</h2>
+            <p className="text-gray-700">{product.description}</p>
           </div>
-          
-          <div className="nutrition">
-            <h2>Nutrition Information</h2>
-            <table>
-              <tbody>
-                {product.nutrition.map((nutrient, index) => (
-                  <tr key={index}>
-                    <td>{nutrient.displayName === "Unknown" ? "Nutrient" : nutrient.displayName}</td>
-                    <td>{nutrient.amount} {nutrient.unit}</td>
+
+          <div className="mb-6">
+            <h2 className="mb-2 text-xl font-semibold">Ingredients</h2>
+            <p className="text-gray-700">{product.ingredients}</p>
+          </div>
+
+          <div>
+            <h2 className="mb-2 text-xl font-semibold">Nutrition Information</h2>
+            <div className="overflow-x-auto">
+              <table className="min-w-full bg-white">
+                <thead className="bg-gray-100">
+                  <tr>
+                    <th className="px-4 py-2 text-left">Nutrient</th>
+                    <th className="px-4 py-2 text-left">Amount per serving</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {product.nutrition.map((nutrient, index) => (
+                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
+                      <td className="px-4 py-2">{nutrient.displayName === "Unknown" ? "Nutrient" : nutrient.displayName}</td>
+                      <td className="px-4 py-2">{nutrient.amount} {nutrient.unit}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          
-          <button className="add-to-basket">Add to Basket</button>
         </div>
       </div>
     </div>

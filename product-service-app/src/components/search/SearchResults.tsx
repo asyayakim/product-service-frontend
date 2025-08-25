@@ -23,8 +23,7 @@ export default function SearchResults() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const location = useLocation();
-  
-  // Get search query from URL
+
   const queryParams = new URLSearchParams(location.search);
   const searchQuery = queryParams.get('q');
 

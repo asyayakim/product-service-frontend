@@ -49,9 +49,9 @@ export default function AllProducts() {
   });
 
   const fetchProducts = async (
-    page: number, 
-    pageSize: number, 
-    categoryFilter: string = '', 
+    page: number,
+    pageSize: number,
+    categoryFilter: string = '',
     priceFilter: PriceRange | null = null,
     sortOption: SortOption = 'featured'
   ) => {
@@ -164,55 +164,55 @@ export default function AllProducts() {
       <div className="flex flex-col gap-6 lg:flex-row">
         <div className="flex flex-col gap-6 lg:w-1/4">
           <div className="sticky top-6">
-            <CategoryFilter 
-              onCategoryChange={handleCategoryChange} 
+            <CategoryFilter
+              onCategoryChange={handleCategoryChange}
               activeCategory={activeCategory}
             />
             <PriceRangeFilter onPriceRangeChange={handlePriceRangeChange} />
-            
+
             {hasActiveFilters && (
               <div className="p-4 mt-4 border rounded-lg bg-gray-50">
                 <h4 className="mb-3 text-lg font-semibold text-gray-800">Active Filters</h4>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {activeCategory && (
-                    <span className="flex items-center px-3 py-1 text-sm bg-blue-100 rounded-full">
+                    <span className="flex items-center px-4 py-2 text-sm bg-gray-200 rounded-full">
                       Category: {activeCategory}
-                      <button 
+                      <button
                         onClick={clearCategoryFilter}
-                        className="ml-1 text-blue-600 hover:text-blue-800"
+                        className="ml-1 text-red-600 hover:text-red-800"
                       >
                         &times;
                       </button>
                     </span>
                   )}
                   {priceRange && (
-                    <span className="flex items-center px-3 py-1 text-sm bg-green-100 rounded-full">
+                    <span className="flex items-center px-4 py-2 text-sm bg-gray-200 rounded-full">
                       Price: ${priceRange.min} - ${priceRange.max}
-                      <button 
+                      <button
                         onClick={clearPriceFilter}
-                        className="ml-1 text-green-600 hover:text-green-800"
+                        className="ml-1 text-red-600 hover:text-red-800"
                       >
                         &times;
                       </button>
                     </span>
                   )}
                   {sortBy !== 'featured' && (
-                    <span className="flex items-center px-3 py-1 text-sm bg-purple-100 rounded-full">
+                    <span className="flex items-center px-4 py-2 text-sm bg-gray-200 rounded-full">
                       Sort: {
                         sortBy === 'price_asc' ? 'Price: Low to High' :
-                        sortBy === 'price_desc' ? 'Price: High to Low' :
-                        sortBy === 'name_asc' ? 'Name: A-Z' : 'Name: Z-A'
+                          sortBy === 'price_desc' ? 'Price: High to Low' :
+                            sortBy === 'name_asc' ? 'Name: A-Z' : 'Name: Z-A'
                       }
-                      <button 
+                      <button
                         onClick={clearSortFilter}
-                        className="ml-1 text-purple-600 hover:text-purple-800"
+                        className="ml-1 text-red-600 hover:text-red-800"
                       >
                         &times;
                       </button>
                     </span>
                   )}
                 </div>
-                <button 
+                <button
                   onClick={clearAllFilters}
                   className="w-full px-3 py-2 text-sm text-white transition-colors bg-red-500 rounded-md hover:bg-red-600"
                 >
@@ -228,10 +228,10 @@ export default function AllProducts() {
             <h2 className="text-2xl font-bold text-gray-800">
               {activeCategory ? `${activeCategory} Products` : 'All Products'}
             </h2>
-            
+
             <SortingDropdown sortBy={sortBy} onSortChange={handleSortChange} />
           </div>
-          
+
           {loading ? (
             <div className="flex items-center justify-center h-64">
               <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
@@ -239,7 +239,7 @@ export default function AllProducts() {
           ) : error ? (
             <div className="p-4 text-center text-red-600 bg-red-100 rounded-lg">
               Error: {error}
-              <button 
+              <button
                 onClick={() => fetchProducts(1, pagination.pageSize, activeCategory, priceRange, sortBy)}
                 className="block px-4 py-2 mx-auto mt-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
               >
@@ -255,7 +255,7 @@ export default function AllProducts() {
                 </div>
               ) : (
                 <>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                     {products.map(product => (
                       <div key={product.productId} className="transition-transform duration-300 hover:scale-105">
                         <ProductCard
@@ -271,7 +271,7 @@ export default function AllProducts() {
                       </div>
                     ))}
                   </div>
-                  
+
                   {pagination.hasMore && (
                     <div className="mt-8 text-center">
                       <button
