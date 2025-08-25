@@ -7,9 +7,9 @@ export default function Footer() {
                         <div className="col-lg-4 col-md-6">
                             <div className="footer-widget footer-about">
                                 <a href="index.html" className="logo">
-                                    <span className="sitename">NiceShop</span>
+                                    <span className="sitename">Product Donor</span>
                                 </a>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam in nibh vehicula, facilisis magna ut, consectetur lorem. Proin eget tortor risus.</p>
+                                <p>Buy food for them who need it the most.</p>
 
                             </div>
                         </div>
@@ -29,41 +29,6 @@ export default function Footer() {
                                 </ul>
                             </div>
                         </div>
-
-                        <div className="col-lg-4 col-md-6">
-                            <div className="footer-widget">
-                                <h4>Contact Information</h4>
-                                <div className="footer-contact">
-                                    <div className="contact-item">
-                                        <i className="bi bi-geo-alt"></i>
-                                        <span>123 Fashion Street, New York, NY 10001</span>
-                                    </div>
-                                    <div className="contact-item">
-                                        <i className="bi bi-telephone"></i>
-                                        <span>+1 (555) 123-4567</span>
-                                    </div>
-                                    <div className="contact-item">
-                                        <i className="bi bi-envelope"></i>
-                                        <span>hello@example.com</span>
-                                    </div>
-                                    <div className="contact-item">
-                                        <i className="bi bi-clock"></i>
-                                        <span>Monday-Friday: 9am-6pm<br />Saturday: 10am-4pm<br />Sunday: Closed</span>
-                                    </div>
-                                </div>
-
-                                <div className="app-buttons mt-4">
-                                    <a href="#" className="app-btn">
-                                        <i className="bi bi-apple"></i>
-                                        <span>App Store</span>
-                                    </a>
-                                    <a href="#" className="app-btn">
-                                        <i className="bi bi-google-play"></i>
-                                        <span>Google Play</span>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -75,13 +40,13 @@ export default function Footer() {
                             <div className="copyright">
                                 <p>© <span>Copyright</span> <strong className="sitename">NiceShop</strong>. All Rights Reserved.</p>
                             </div>
-                            <div className="credits mt-1">
+                            <div className="mt-1 credits">
                                 Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
                             </div>
                         </div>
 
                         <div className="col-lg-6 col-md-12">
-                            <div className="d-flex flex-wrap justify-content-lg-end justify-content-center align-items-center gap-4">
+                            <div className="flex-wrap gap-4 d-flex justify-content-lg-end justify-content-center align-items-center">
                                 <div className="payment-methods">
                                     <div className="payment-icons">
                                         <i className="bi bi-credit-card" aria-label="Credit Card"></i>

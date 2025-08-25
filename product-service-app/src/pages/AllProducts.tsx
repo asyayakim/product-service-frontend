@@ -1,9 +1,10 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ProductCard from '../components/productCard';
 import { API_BASE_URL } from '../apiConfig';
 import CategoryFilter from '../components/main/CategoryFilter';
 import PriceRangeFilter from '../components/main/PriceRangeFilter';
+import SortingDropdown, { type SortOption } from '../components/search/SortingDropdown';
 
 interface ApiProduct {
   productId: number;
@@ -38,6 +39,7 @@ export default function AllProducts() {
   const [error, setError] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState(category || '');
   const [priceRange, setPriceRange] = useState<PriceRange | null>(null);
+  const [sortBy, setSortBy] = useState<SortOption>('featured');
   const navigate = useNavigate();
 
   const [pagination, setPagination] = useState<PaginationState>({
@@ -46,7 +48,13 @@ export default function AllProducts() {
     hasMore: true
   });
 
-  const fetchProducts = async (page: number, pageSize: number, categoryFilter: string = '', priceFilter: PriceRange | null = null) => {
+  const fetchProducts = async (
+    page: number, 
+    pageSize: number, 
+    categoryFilter: string = '', 
+    priceFilter: PriceRange | null = null,
+    sortOption: SortOption = 'featured'
+  ) => {
     try {
       const isInitialLoad = page === 1;
       if (isInitialLoad) {
@@ -62,6 +70,9 @@ export default function AllProducts() {
       }
       if (priceFilter) {
         url += `&minPrice=${priceFilter.min}&maxPrice=${priceFilter.max}`;
+      }
+      if (sortOption !== 'featured') {
+        url += `&sortBy=${sortOption}`;
       }
 
       const response = await fetch(url);
@@ -98,11 +109,11 @@ export default function AllProducts() {
 
   useEffect(() => {
     setActiveCategory(category || '');
-    fetchProducts(1, pagination.pageSize, category || '', priceRange);
-  }, [category, priceRange]);
+    fetchProducts(1, pagination.pageSize, category || '', priceRange, sortBy);
+  }, [category, priceRange, sortBy]);
 
   const handleLoadMore = () => {
-    fetchProducts(pagination.page + 1, pagination.pageSize, activeCategory, priceRange);
+    fetchProducts(pagination.page + 1, pagination.pageSize, activeCategory, priceRange, sortBy);
   };
 
   const handleCategoryChange = (newCategory: string) => {
@@ -121,6 +132,11 @@ export default function AllProducts() {
     setPagination(prev => ({ ...prev, page: 1 }));
   };
 
+  const handleSortChange = (newSort: SortOption) => {
+    setSortBy(newSort);
+    setPagination(prev => ({ ...prev, page: 1 }));
+  };
+
   const clearCategoryFilter = () => {
     setActiveCategory('');
     navigate('/all-products');
@@ -130,13 +146,18 @@ export default function AllProducts() {
     setPriceRange(null);
   };
 
+  const clearSortFilter = () => {
+    setSortBy('featured');
+  };
+
   const clearAllFilters = () => {
     setActiveCategory('');
     setPriceRange(null);
+    setSortBy('featured');
     navigate('/all-products');
   };
 
-  const hasActiveFilters = activeCategory || priceRange;
+  const hasActiveFilters = activeCategory || priceRange || sortBy !== 'featured';
 
   return (
     <div className="container px-4 py-6 mx-auto">
@@ -150,26 +171,41 @@ export default function AllProducts() {
             <PriceRangeFilter onPriceRangeChange={handlePriceRangeChange} />
             
             {hasActiveFilters && (
-              <div className="p-3 mt-4 border rounded bg-gray-50">
-                <h4 className="mb-3 widget-title h5">Active Filters</h4>
-                <div className="flex flex-wrap gap-2">
+              <div className="p-4 mt-4 border rounded-lg bg-gray-50">
+                <h4 className="mb-3 text-lg font-semibold text-gray-800">Active Filters</h4>
+                <div className="flex flex-wrap gap-2 mb-3">
                   {activeCategory && (
-                    <span className="px-2 py-1 text-sm bg-blue-100 rounded-full">
+                    <span className="flex items-center px-3 py-1 text-sm bg-blue-100 rounded-full">
                       Category: {activeCategory}
                       <button 
                         onClick={clearCategoryFilter}
-                        className="ml-1 text-gray-600 hover:text-blue-800"
+                        className="ml-1 text-blue-600 hover:text-blue-800"
                       >
                         &times;
                       </button>
                     </span>
                   )}
                   {priceRange && (
-                    <span className="px-2 py-1 text-sm bg-green-100 rounded-full">
+                    <span className="flex items-center px-3 py-1 text-sm bg-green-100 rounded-full">
                       Price: ${priceRange.min} - ${priceRange.max}
                       <button 
                         onClick={clearPriceFilter}
-                        className="p-2 ml-1 text-green-600 hover:text-green-800"
+                        className="ml-1 text-green-600 hover:text-green-800"
+                      >
+                        &times;
+                      </button>
+                    </span>
+                  )}
+                  {sortBy !== 'featured' && (
+                    <span className="flex items-center px-3 py-1 text-sm bg-purple-100 rounded-full">
+                      Sort: {
+                        sortBy === 'price_asc' ? 'Price: Low to High' :
+                        sortBy === 'price_desc' ? 'Price: High to Low' :
+                        sortBy === 'name_asc' ? 'Name: A-Z' : 'Name: Z-A'
+                      }
+                      <button 
+                        onClick={clearSortFilter}
+                        className="ml-1 text-purple-600 hover:text-purple-800"
                       >
                         &times;
                       </button>
@@ -178,7 +214,7 @@ export default function AllProducts() {
                 </div>
                 <button 
                   onClick={clearAllFilters}
-                  className="w-full px-3 py-2 mt-2 text-sm text-white bg-red-500 rounded hover:bg-red-600"
+                  className="w-full px-3 py-2 text-sm text-white transition-colors bg-red-500 rounded-md hover:bg-red-600"
                 >
                   Clear All Filters
                 </button>
@@ -188,6 +224,13 @@ export default function AllProducts() {
         </div>
 
         <div className="flex-1">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold text-gray-800">
+              {activeCategory ? `${activeCategory} Products` : 'All Products'}
+            </h2>
+            
+            <SortingDropdown sortBy={sortBy} onSortChange={handleSortChange} />
+          </div>
           
           {loading ? (
             <div className="flex items-center justify-center h-64">
@@ -196,36 +239,61 @@ export default function AllProducts() {
           ) : error ? (
             <div className="p-4 text-center text-red-600 bg-red-100 rounded-lg">
               Error: {error}
+              <button 
+                onClick={() => fetchProducts(1, pagination.pageSize, activeCategory, priceRange, sortBy)}
+                className="block px-4 py-2 mx-auto mt-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+              >
+                Try Again
+              </button>
             </div>
           ) : (
             <>
-              <div className="grid grid-cols-1 gap-6 p-8 sm:grid-cols-2 sm:p-3 sm:gap-12 md:grid-cols-3 lg:grid-cols-4">
-                {products.map(product => (
-                  <div key={product.productId}>
-                    <ProductCard
-                      productId={product.productId}
-                      imageUrl={product.imageUrl}
-                      productName={product.productName}
-                      brand={product.brand}
-                      unitPrice={product.unitPrice}
-                      description={product.description}
-                      category={product.category}
-                      store={product.store}
-                    />
-                  </div>
-                ))}
-              </div>
-              
-              {pagination.hasMore && (
-                <div className="mt-8 text-center">
-                  <button
-                    onClick={handleLoadMore}
-                    disabled={loadingMore}
-                    className="px-6 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
-                  >
-                    {loadingMore ? 'Loading...' : 'Load More'}
-                  </button>
+              {products.length === 0 ? (
+                <div className="p-8 text-center bg-gray-100 rounded-lg">
+                  <h3 className="text-xl font-semibold text-gray-700">No products found</h3>
+                  <p className="mt-2 text-gray-500">Try adjusting your filters or search criteria</p>
                 </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                    {products.map(product => (
+                      <div key={product.productId} className="transition-transform duration-300 hover:scale-105">
+                        <ProductCard
+                          productId={product.productId}
+                          imageUrl={product.imageUrl}
+                          productName={product.productName}
+                          brand={product.brand}
+                          unitPrice={product.unitPrice}
+                          description={product.description}
+                          category={product.category}
+                          store={product.store}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {pagination.hasMore && (
+                    <div className="mt-8 text-center">
+                      <button
+                        onClick={handleLoadMore}
+                        disabled={loadingMore}
+                        className="px-6 py-2 text-white transition-colors bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                      >
+                        {loadingMore ? (
+                          <span className="flex items-center justify-center">
+                            <svg className="w-5 h-5 mr-2 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Loading...
+                          </span>
+                        ) : (
+                          'Load More Products'
+                        )}
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </>
           )}
