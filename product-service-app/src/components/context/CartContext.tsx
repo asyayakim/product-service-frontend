@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-
 export type BasketItem = {
   productId: number;
   imageUrl: string;
