@@ -99,7 +99,9 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
       )}
 
       {/* Search Sidebar */}
-      <div className={`fixed top-0 left-0 h-full w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${isSearchOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div
+        data-testid="search-sidebar"
+        className={`fixed top-0 left-0 h-full w-80 bg-white shadow-xl z-50 transform transition-transform duration-300 ease-in-out ${isSearchOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         <div className="flex items-center justify-between p-5 border-b border-gray-200 bg-gray-50">
           <h3 className="text-xl font-semibold text-gray-800">Search Products</h3>
           <button

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { useCart } from '../context/CartContext'
 import CommonHeader from '../header/CommonHeader';
-import userEvent from '@testing-library/user-event';
+
 jest.mock('../context/CartContext', () => ({
     useCart: jest.fn(),
 }));
