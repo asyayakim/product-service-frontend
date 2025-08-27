@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import ProductCard from '../components/productCard.tsx';
-import AddSection from '../components/addvertisment/AddSection.tsx';
-import BestSellers from '../components/addvertisment/BestSellers.tsx';
+import ProductCard from '../components/productCard';
+import AddSection from '../components/addvertisment/AddSection';
+import BestSellers from '../components/addvertisment/BestSellers';
 import { API_BASE_URL } from '../apiConfig';
+import PromoCards from '../components/addvertisment/PromoCards';
 
 interface ApiProduct {
   productId: number;
@@ -91,6 +92,7 @@ export default function MainView() {
     <main className="main-view">
       <AddSection />
       <BestSellers />
+      <PromoCards />
 
       {loading && <div className="flex items-center justify-center">
                             <svg className="w-5 h-5 mr-3 -ml-1 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

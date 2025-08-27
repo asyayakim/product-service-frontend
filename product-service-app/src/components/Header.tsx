@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { UserContext } from "./context/UserProvider";
 
-import CommonHeader from "./header/CommonHeader.tsx";
+import CommonHeader from "./header/CommonHeader";
 import Breadcrumbs from "./Breadcrumbs";
 
 
