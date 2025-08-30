@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BiArrowToRight } from 'react-icons/bi';
 import { API_BASE_URL } from '../../apiConfig';
 import Loading from '../elements/Loading';
@@ -40,7 +40,7 @@ export default function PromoCardsSection() {
   }, []);
 
   const handleCategoryClick = (categoryName: string) => {
-    navigate(`/products?category=${encodeURIComponent(categoryName)}`);
+    navigate(`/all-products/${encodeURIComponent(categoryName)}`);
   };
 
   if (loading) {
@@ -71,7 +71,7 @@ export default function PromoCardsSection() {
   const otherCategories = categories.length > 1 ? categories.slice(1, 5) : [];
 
   return (
-    <section id="promo-cards" className="py-16">
+    <section id="promo-cards" className="py-1">
       <div className="container px-4 mx-auto">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {featuredCategory && (
@@ -117,6 +117,7 @@ export default function PromoCardsSection() {
       data-aos-delay={300 + (index * 100)}
     >
       <div className="flex flex-col justify-center flex-1 p-4 sm:p-5">
+  
         <h4 className="mb-1 text-sm font-bold text-gray-900 capitalize sm:text-base">{category.category}</h4>
         <p className="mb-2 text-xs text-gray-700 sm:text-sm">{category.totalProductsByCategory} products</p>
         <button 
