@@ -5,12 +5,12 @@ import './loginregister.css'
 import './search.css'
 import './chatSearchWidget.css'
 import './main-view.css'
-import App from './App.tsx'
+import App from './App'
 import './product-card.css'
 import './product-details.css'
 import './css/css/main.css'
 import { BrowserRouter } from 'react-router-dom'
-import { CartProvider } from  './components/context/CartContext.tsx'
+import { CartProvider } from  './components/context/CartContext'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

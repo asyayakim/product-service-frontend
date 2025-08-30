@@ -85,64 +85,69 @@ export default function PromoCardsSection() {
       <div className="container px-4 mx-auto">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
           {featuredCategory && (
-            <div 
-              className="flex flex-col overflow-hidden bg-white border border-gray-200 rounded-2xl md:flex-row"
-              data-aos="fade-right"
-              data-aos-delay="200"
-            >
-              <div className="flex flex-col justify-center flex-1 p-8">
-                <span className="inline-block px-3 py-1 mb-4 text-xs font-semibold text-white bg-gray-800 rounded-full">
-                   Popular Categories
-                </span>
-                <h2 className="mb-4 text-2xl font-bold text-gray-900 capitalize">{featuredCategory.category}</h2>
-                <p className="mb-6 text-gray-700">
-                  {featuredCategory.totalProductsByCategory} premium products available
-                </p>
-                <button 
-                  onClick={() => handleCategoryClick(featuredCategory.category)}
-                  className="flex items-center mt-auto font-semibold text-gray-900 hover:underline"
-                >
-                  Explore Collection <BiArrowToRight className="ml-2 transition-transform group-hover:translate-x-1" />
-                </button>
-              </div>
-              <div className="md:w-2/5">
-                <img 
-                  src={featuredCategory.imageUrl} 
-                  alt={featuredCategory.category}
-                  className="object-cover w-auto h-full p-20 md:p-10"
-                />
-              </div>
-            </div>
-          )}
+  <div 
+    className="flex flex-col overflow-hidden bg-white border border-gray-200 rounded-2xl md:flex-row"
+    data-aos="fade-right"
+    data-aos-delay="200"
+  >
+    <div className="flex flex-col justify-center flex-1 p-6 md:p-8">
+      <span className="inline-block px-4 py-2 mb-4 text-sm font-semibold text-white bg-green-700 rounded-full">
+        Popular Categories
+      </span>
+      <h2 className="mb-4 text-2xl font-bold text-gray-900 capitalize md:text-3xl">{featuredCategory.category}</h2>
+      <p className="mb-6 text-gray-700">
+        {featuredCategory.totalProductsByCategory} premium products available
+      </p>
+      <button 
+        onClick={() => handleCategoryClick(featuredCategory.category)}
+        className="flex items-center mt-auto font-semibold text-gray-900 hover:underline group/button"
+      >
+        Explore Collection 
+        <BiArrowToRight className="ml-2 transition-transform duration-300 group-hover/button:translate-x-1" />
+      </button>
+    </div>
+    <div className="flex items-center justify-center bg-white md:w-2/5">
+      <div className="relative w-full h-56 md:h-64">
+        <img 
+          src={featuredCategory.imageUrl} 
+          alt={featuredCategory.category}
+          className="object-contain w-full h-full p-4"
+        />
+      </div>
+    </div>
+  </div>
+)}
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-            {otherCategories.map((category, index) => (
-              <div
-                key={category.category}
-                className="flex overflow-hidden bg-white border border-gray-200 rounded-2xl group"
-                data-aos="fade-up"
-                data-aos-delay={300 + (index * 100)}
-              >
-                <div className="flex flex-col justify-center flex-1 p-5">
-                  <h4 className="mb-2 text-lg font-bold text-gray-900 capitalize">{category.category}</h4>
-                  <p className="mb-4 text-sm text-gray-700">{category.totalProductsByCategory} products</p>
-                  <button 
-                    onClick={() => handleCategoryClick(category.category)}
-                    className="flex items-center text-sm font-semibold text-gray-900 hover:underline"
-                  >
-                    Shop Now <BiArrowToRight className="ml-1 transition-transform group-hover:translate-x-1" />
-                  </button>
-                </div>
-                <div className="w-1/3">
-                  <img 
-                    src={category.imageUrl} 
-                    alt={category.category}
-                    className="object-cover p-6 md:p-10"
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
+  {otherCategories.map((category, index) => (
+    <div
+      key={category.category}
+      className="flex overflow-hidden bg-white border border-gray-200 rounded-2xl group h-28 sm:h-32"
+      data-aos="fade-up"
+      data-aos-delay={300 + (index * 100)}
+    >
+      <div className="flex flex-col justify-center flex-1 p-4 sm:p-5">
+        <h4 className="mb-1 text-sm font-bold text-gray-900 capitalize sm:text-base">{category.category}</h4>
+        <p className="mb-2 text-xs text-gray-700 sm:text-sm">{category.totalProductsByCategory} products</p>
+        <button 
+          onClick={() => handleCategoryClick(category.category)}
+          className="flex items-center text-xs font-semibold text-gray-900 hover:underline sm:text-sm"
+        >
+          Shop Now <BiArrowToRight className="ml-1 transition-transform group-hover:translate-x-1" />
+        </button>
+      </div>
+      <div className="flex items-center justify-center w-1/3 bg-white">
+        <div className="relative w-full h-20">
+          <img 
+            src={category.imageUrl} 
+            alt={category.category}
+            className="object-contain w-full h-full p-2"
+          />
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
         </div>
       </div>
     </section>
