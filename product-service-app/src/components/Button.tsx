@@ -3,6 +3,7 @@ type ButtonProps = {
     type?: "button" | "submit" | "reset";
     onClick: () => void;
     className?: string;
+    label?: string;
 };
 
 export default function Button({ name, type = "button", onClick }: ButtonProps) {

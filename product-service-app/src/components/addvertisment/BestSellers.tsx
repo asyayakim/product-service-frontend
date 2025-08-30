@@ -1,7 +1,8 @@
-import { FaHeart, FaExchangeAlt, FaSearch, FaStar, FaRegStar, FaStarHalfAlt, FaShoppingCart } from 'react-icons/fa';
+import { FaHeart, FaExchangeAlt, FaSearch, FaShoppingCart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
 import { useCart } from '../context/CartContext';
 import { API_BASE_URL } from '../../apiConfig';
+import ElementStars from '../elements/ElementStars';
 
 interface ProductDetails {
   productId: number;
@@ -74,27 +75,6 @@ export default function BestSellers() {
     }
   }, [products.length]);
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 >= 0.5;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(<FaStar key={i} className="text-yellow-400" />);
-    }
-
-    if (hasHalfStar) {
-      stars.push(<FaStarHalfAlt key={fullStars} className="text-yellow-400" />);
-    }
-
-    const emptyStars = 5 - stars.length;
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(<FaRegStar key={fullStars + i + 1} className="text-yellow-400" />);
-    }
-
-    return stars;
-  };
-
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -127,8 +107,8 @@ export default function BestSellers() {
           <div 
             key={product.productId} 
             className={`
-              overflow-hidden transition-all duration-300 bg-white rounded-xl hover:shadow-xl
-              transform transition-transform duration-500 ease-out
+              overflow-hidden transition-all bg-white rounded-xl hover:shadow-xl
+              transform duration-500 ease-out
               ${visibleCards[index] 
                 ? 'translate-y-0 opacity-100' 
                 : 'translate-y-10 opacity-0'
@@ -180,9 +160,7 @@ export default function BestSellers() {
               </h3>
 
               <div className="flex items-center mb-3">
-                <div className="flex text-yellow-400">
-                  {renderStars(4.5)}
-                </div>
+                <ElementStars rating={4.5} />
                 <span className="ml-2 text-sm text-gray-500">(24)</span>
               </div>
 

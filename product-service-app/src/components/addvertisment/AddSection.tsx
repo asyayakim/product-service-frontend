@@ -9,6 +9,7 @@ import {
   FaSearch
 } from 'react-icons/fa';
 import { API_BASE_URL } from '../../apiConfig';
+import Loading from '../elements/Loading';
 
 interface ProductCardProps {
   productId: number;
@@ -73,16 +74,7 @@ export default function AddSection() {
   };
 
   if (loading) {
-    return (
-      <section id="hero" className="hero section">
-        <div className="hero-container">
-          <div className="loading-placeholder">
-            <div className="spinner"></div>
-            <p>Loading featured products...</p>
-          </div>
-        </div>
-      </section>
-    );
+      return <Loading />;
   }
 
   if (error) {

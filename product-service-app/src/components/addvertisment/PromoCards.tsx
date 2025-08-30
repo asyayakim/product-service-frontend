@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BiArrowToRight } from 'react-icons/bi';
 import { API_BASE_URL } from '../../apiConfig';
+import Loading from '../elements/Loading';
 
 interface Category {
   category: string;
@@ -44,18 +45,7 @@ export default function PromoCardsSection() {
 
   if (loading) {
     return (
-      <section id="promo-cards" className="py-16 bg-gradient-to-r from-gray-100 to-white">
-        <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-1 gap-6 mt-8 lg:grid-cols-2">
-            <div className="bg-gray-200 rounded-lg h-96 animate-pulse"></div>
-            <div className="grid grid-cols-2 gap-6">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-gray-200 rounded-lg h-44 animate-pulse"></div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <Loading />
     );
   }
 

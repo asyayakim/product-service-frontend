@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { API_BASE_URL } from '../../apiConfig';
+import Loading from '../elements/Loading';
 
 interface CategoryFilterProps {
   onCategoryChange: (category: string) => void;
@@ -57,10 +58,7 @@ const CategoryFilter = ({ onCategoryChange, activeCategory }: CategoryFilterProp
 
   if (loading) {
     return (
-      <div className="p-3 mb-4 border rounded category-widget widget-item bg-light">
-        <h3 className="mb-3 widget-title h5">Categories</h3>
-        <div className="py-2 text-center">Loading categories...</div>
-      </div>
+  <Loading />
     );
   }
 

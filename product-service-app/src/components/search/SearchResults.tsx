@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ProductCard from '../productCard';
 import { API_BASE_URL } from '../../apiConfig';
+import Loading from '../elements/Loading';
 
 interface ApiProduct {
   productId: number;
@@ -58,9 +59,7 @@ export default function SearchResults() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
-      </div>
+      <Loading />
     );
   }
 
