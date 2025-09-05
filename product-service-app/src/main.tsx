@@ -11,13 +11,17 @@ import './product-details.css'
 import './css/css/main.css'
 import { BrowserRouter } from 'react-router-dom'
 import { CartProvider } from  './components/context/CartContext'
+import { Provider } from 'react-redux'
+import {store } from '../src/components/app/Store'
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <Provider store={store}>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </Provider>
     </BrowserRouter>
-  </StrictMode>,
-)
+  </StrictMode>
+);
