@@ -46,7 +46,7 @@ const BasketSlice = createSlice({
         clearBasket: (state) =>
         {
             state.items = [];
-        }
+        },
     }
 })
 export const {clearBasket, addToBasket, removeItem} = BasketSlice.actions;
