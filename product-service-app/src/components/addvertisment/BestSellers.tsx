@@ -21,6 +21,7 @@ interface ProductDetails {
     displayName: string;
     amount: number;
     unit: string;
+    
   }>;
 }
 
