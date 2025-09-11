@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import basketReducer from "../../features/Basket/BasketSlice";
+import basketReducer from "../../features/Basket/basketSlice";
 import favoritesReducer from "../../features/Favorites/favoritesSlice"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 

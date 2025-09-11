@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type FavoriteItem = {
+export type FavoriteItem = {
   productId: number;
   imageUrl: string;
   productName: string;
@@ -9,7 +9,7 @@ type FavoriteItem = {
   store: { name: string; logo: string };
 };
 
-type FavoritesState = {
+export type FavoritesState = {
   items: FavoriteItem[];
 };
 
@@ -29,8 +29,12 @@ const favoritesSlice = createSlice({
     removeFromFavorites: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((i) => i.productId !== action.payload);
     },
+    clearFavorites: (state) => {
+      state.items = [];
+    },
   },
+
 });
 
-export const { addToFavorites, removeFromFavorites } = favoritesSlice.actions;
+export const { addToFavorites, removeFromFavorites, clearFavorites } = favoritesSlice.actions;
 export default favoritesSlice.reducer;

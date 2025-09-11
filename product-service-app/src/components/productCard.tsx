@@ -1,6 +1,8 @@
-import { Link } from 'react-router-dom';
-import { FaRegHeart, FaHeart, FaShoppingBasket } from 'react-icons/fa';
-import { useCart } from './context/CartContext';
+import { Link } from "react-router-dom";
+import { FaRegHeart, FaHeart, FaShoppingBasket } from "react-icons/fa";
+import { useAppDispatch, useAppSelector } from "../components/app/Store";
+import { addToFavorites, removeFromFavorites } from "../features/Favorites/favoritesSlice";
+import { addToBasket, removeItem } from "../features/Basket/basketSlice";
 
 interface ProductCardProps {
   productId: number;
@@ -20,33 +22,22 @@ const ProductCard = ({
   productId,
   imageUrl,
   productName,
-  // category,
   brand,
   unitPrice,
-  // description,
-  store
+  store,
 }: ProductCardProps) => {
-  const {
-    favorites,
-    basket,
-    addToFavorites,
-    removeFromFavorites,
-    addToBasket,
-    removeFromBasket
-  } = useCart();
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector((state) => state.favorites.items);
+  const basket = useAppSelector((state) => state.basket.items);
 
-  const isFavorite = favorites.some(item => item.productId === productId);
-  const isInBasket = basket.some(item => item.productId === productId);
+  const isFavorite = favorites.some((item) => item.productId === productId);
+  const isInBasket = basket.some((item) => item.productId === productId);
 
   const formatPrice = (price: number) =>
     new Intl.NumberFormat('no-NO', {
       minimumFractionDigits: 2,
-      maximumFractionDigits: 2
+      maximumFractionDigits: 2,
     }).format(price);
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
 
     const productData = { 
       productId, 
@@ -54,13 +45,18 @@ const ProductCard = ({
       productName, 
       brand, 
       unitPrice, 
-      store 
+    quantity: 1, 
+    store,
     };
 
+  const handleFavoriteClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (isFavorite) {
-      removeFromFavorites(productId);
+      dispatch(removeFromFavorites(productId));
     } else {
-      addToFavorites(productData);
+      dispatch(addToFavorites(productData));
     }
   };
 
@@ -68,19 +64,10 @@ const ProductCard = ({
     e.preventDefault();
     e.stopPropagation();
 
-    const productData = { 
-      productId, 
-      imageUrl, 
-      productName, 
-      brand, 
-      unitPrice, 
-      store 
-    };
-
     if (isInBasket) {
-      removeFromBasket(productId);
+      dispatch(removeItem({ ...productData, quantity: 1 })); // remove 1
     } else {
-      addToBasket(productData);
+      dispatch(addToBasket(productData));
     }
   };
 
