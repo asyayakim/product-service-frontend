@@ -9,15 +9,22 @@ import App from './App'
 import './product-card.css'
 import './product-details.css'
 import './css/css/main.css'
+import { Provider } from "react-redux";
+import { store, persistor } from "./components/app/Store";
 import { BrowserRouter } from 'react-router-dom'
-import { CartProvider } from  './components/context/CartContext'
+import { CartProvider } from './components/context/CartContext'
+import { PersistGate } from "redux-persist/integration/react";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        <App />
-      </CartProvider>
+      <Provider store={store}>
+        <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+          <CartProvider>
+            <App />
+          </CartProvider>
+        </PersistGate>
+      </Provider>
     </BrowserRouter>
   </StrictMode>,
 )
