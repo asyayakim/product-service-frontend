@@ -37,10 +37,10 @@ const BasketSlice = createSlice({
             const existing = state.items.find(i => i.productId === action.payload.productId);
             if (existing){
                 existing.quantity -= action.payload.quantity;
+                if (existing.quantity == 1) {
+                    state.items.filter(i => i.productId !== action.payload.productId);
+                }
                
-            }
-            if (existing.quantity == 1) {
-                state.items.filter(i => i.productId !== action.payload.productId);
             }
         },
         clearBasket: (state) =>
