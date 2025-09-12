@@ -24,7 +24,11 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
    const favorites = useAppSelector((state) => state.favorites.items);
-  const basket = useAppSelector((state) => state.basket.items)
+  const basket = useAppSelector((state) => state.basket.items);
+  const allProductsInBasket = basket.map(item => item.quantity).
+    reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+  
   
   const navigate = useNavigate();
 
@@ -242,7 +246,7 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
               <Link to="/basket" className="nav-link">
                 <div className="basket-icon-container">
                   <FaShoppingBasket />
-                  <span className="basket-badge">{basket.length}</span>
+                  <span className="basket-badge">{allProductsInBasket}</span>
                 </div>
                 <span className="nav-text">Basket</span>
               </Link>

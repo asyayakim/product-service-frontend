@@ -65,7 +65,7 @@ const ProductCard = ({
     e.stopPropagation();
 
     if (isInBasket) {
-      dispatch(removeItem({ ...productData, quantity: 1 })); // remove 1
+      dispatch(removeItem({ ...productData, quantity: 1 }));
     } else {
       dispatch(addToBasket(productData));
     }
