@@ -1,22 +1,13 @@
 import { FaTrash, FaHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useCart } from '../components/context/CartContext';
-
+import { useAppDispatch, useAppSelector } from "../components/app/Store";
+import { addToBasket, removeItem } from "../features/Basket/basketSlice";
+import { removeFromFavorites, clearFavorites } from "../features/Favorites/favoritesSlice";
 
 export default function Favorites() {
-
-
-  const {
-    favorites,
-    removeFromFavorites,
-    clearFavorites,
-    // addToBasket,
-    // basket
-  } = useCart();
-
-  // const isInBasket = (productId: number) => {
-  //   return basket.some(item => item.productId === productId);
-  // };
+  const favorites = useAppSelector((state) => state.favorites.items);
+  const basket = useAppSelector((state) => state.basket.items);
+  const dispatch = useAppDispatch();
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('no-NO', {
@@ -27,6 +18,8 @@ export default function Favorites() {
     }).format(price);
   };
 
+
+
   return (
     <div className="max-w-6xl px-4 py-8 mx-auto">
       <div className="flex items-center justify-between mb-8">
@@ -36,7 +29,7 @@ export default function Favorites() {
       <div className="flex items-center justify-between p-4 border-b border-gray-200">
         <h2 className="text-lg font-semibold">Items ({favorites.length})</h2>
         <button
-          onClick={clearFavorites}
+         onClick={() => dispatch(clearFavorites())}
           className="flex items-center text-red-600 hover:text-red-800"
         >
           Clear Favorites
@@ -102,7 +95,7 @@ export default function Favorites() {
                         {formatPrice(item.unitPrice)}
                       </span>
                       <button
-                        onClick={() => removeFromFavorites(item.productId)}
+                         onClick={() => dispatch(removeFromFavorites(item.productId))}
                         className="ml-4 text-gray-400 hover:text-red-500"
                       >
                         <FaTrash />

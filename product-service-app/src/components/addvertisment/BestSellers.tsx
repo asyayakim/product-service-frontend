@@ -1,8 +1,11 @@
 import { FaHeart, FaExchangeAlt, FaSearch, FaShoppingCart } from 'react-icons/fa';
 import { useEffect, useState } from 'react';
-import { useCart } from '../context/CartContext';
 import { API_BASE_URL } from '../../apiConfig';
 import ElementStars from '../elements/ElementStars';
+import { useAppDispatch, useAppSelector } from "../app/Store";
+import { addToFavorites } from "../../features/Favorites/favoritesSlice";
+import { addToBasket } from "../../features/Basket/basketSlice";
+
 
 interface ProductDetails {
   productId: number;
@@ -28,8 +31,19 @@ export default function BestSellers() {
   const [products, setProducts] = useState<ProductDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { addToBasket, addToFavorites, favorites } = useCart();
   const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector((state) => state.favorites.items);
+  const basket = useAppSelector((state) => state.basket.items);
+  const [animateProductId, setAnimateProductId] = useState<number | null>(null);
+
+  const handleAddToBasket = (product: ProductDetails) => {
+    dispatch(addToBasket({ ...product, quantity: 1 }));
+    setAnimateProductId(product.productId);
+
+    setTimeout(() => setAnimateProductId(null), 400);
+  };
+
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -70,7 +84,7 @@ export default function BestSellers() {
           }, index * 10);
         });
       }, 100);
-      
+
       return () => clearTimeout(timer);
     }
   }, [products.length]);
@@ -104,13 +118,13 @@ export default function BestSellers() {
 
       <section id="best-sellers" className="grid grid-cols-1 gap-8 px-12 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
         {products.map((product, index) => (
-          <div 
-            key={product.productId} 
+          <div
+            key={product.productId}
             className={`
               overflow-hidden transition-all bg-white rounded-xl hover:shadow-xl
               transform duration-500 ease-out
-              ${visibleCards[index] 
-                ? 'translate-y-0 opacity-100' 
+              ${visibleCards[index]
+                ? 'translate-y-0 opacity-100'
                 : 'translate-y-10 opacity-0'
               }
             `}
@@ -129,14 +143,14 @@ export default function BestSellers() {
               />
               <div className="absolute inset-0 flex items-center justify-center space-x-4 transition-all duration-300 bg-black bg-opacity-0 opacity-0 group-hover:bg-opacity-20 group-hover:opacity-100">
                 <button
-                  onClick={() => addToFavorites({
+                  onClick={() => dispatch(addToFavorites({
                     productId: product.productId,
                     imageUrl: product.imageUrl,
                     productName: product.productName,
                     brand: product.brand,
                     unitPrice: product.unitPrice,
                     store: product.store
-                  })}
+                  }))}
                   className="p-3 transition-colors bg-white rounded-full hover:bg-gray-100"
                 >
                   <FaHeart
@@ -166,12 +180,23 @@ export default function BestSellers() {
 
               <div className="flex items-center justify-between">
                 <div className="text-xl font-bold text-gray-900">${product.unitPrice.toFixed(2)}</div>
-                <button
-                  onClick={() => addToBasket(product)}
-                  className="flex items-center justify-center w-10 h-10 rounded-lg hover:text-green-600"
-                >
-                  <FaShoppingCart className="text-lg" />
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => handleAddToBasket(product)}
+                    className="flex items-center justify-center w-10 h-10 rounded-lg hover:text-green-600"
+                  >
+                    <FaShoppingCart className="text-lg" />
+                  </button>
+
+                  {animateProductId === product.productId && (
+                    <span
+                      className="absolute flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-green-500 rounded-full -top-3 -right-3 animate-bounce-slow"
+                    >
+                      +1
+                    </span>
+                  )}
+                </div>
+
               </div>
             </div>
           </div>

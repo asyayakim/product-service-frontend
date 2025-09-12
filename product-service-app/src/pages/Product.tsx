@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../apiConfig';
-import { useCart } from '../components/context/CartContext';
 import { FaRegHeart, FaHeart, FaShoppingBasket, FaArrowLeft } from 'react-icons/fa';
+import { useAppDispatch, useAppSelector } from '../components/app/Store';
+import { addToBasket, removeItem } from '../features/Basket/basketSlice';
+import { addToFavorites, removeFromFavorites } from '../features/Favorites/favoritesSlice';
 
 interface ProductDetails {
   productId: number;
@@ -29,15 +31,10 @@ export default function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
-  
-  const {
-    favorites,
-    basket,
-    addToFavorites,
-    removeFromFavorites,
-    addToBasket,
-    removeFromBasket
-  } = useCart();
+  const dispatch = useAppDispatch();
+  const favorites = useAppSelector(state => state.favorites.items);
+  const basket = useAppSelector(state => state.basket.items);
+
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -102,36 +99,72 @@ export default function Product() {
     </div>
   );
 
-  const isFavorite = favorites.some(item => item.productId === product.productId);
-  const isInBasket = basket.some(item => item.productId === product.productId);
+  // const isFavorite = favorites.some(item => item.productId === product.productId);
+  // const isInBasket = basket.some(item => item.productId === product.productId);
+
+  // const handleFavoriteClick = () => {
+  //   if (isFavorite) {
+  //     removeFromFavorites(product.productId);
+  //   } else {
+  //     addToFavorites({
+  //       productId: product.productId,
+  //       imageUrl: product.imageUrl,
+  //       productName: product.productName,
+  //       brand: product.brand,
+  //       unitPrice: product.unitPrice,
+  //       store: product.store
+  //     });
+  //   }
+  // };
+
+  // const handleBasketClick = () => {
+  //   if (isInBasket) {
+  //     removeFromBasket(product.productId);
+  //   } else {
+  //     addToBasket({
+  //       productId: product.productId,
+  //       imageUrl: product.imageUrl,
+  //       productName: product.productName,
+  //       brand: product.brand,
+  //       unitPrice: product.unitPrice,
+  //       store: product.store
+  //     });
+  //   }
+  // };
+   const basketItem = basket.find(i => i.productId === product.productId);
+  const isInBasket = Boolean(basketItem);
+  const isFavorite = favorites.some(f => f.productId === product.productId);
+
+  const productPayloadForBasket = {
+    productId: product.productId,
+    imageUrl: product.imageUrl,
+    productName: product.productName,
+    brand: product.brand,
+    unitPrice: product.unitPrice,
+    quantity: 1,
+    store: product.store,
+  };
 
   const handleFavoriteClick = () => {
     if (isFavorite) {
-      removeFromFavorites(product.productId);
+      dispatch(removeFromFavorites(product.productId));
     } else {
-      addToFavorites({
+      dispatch(addToFavorites({
         productId: product.productId,
         imageUrl: product.imageUrl,
         productName: product.productName,
         brand: product.brand,
         unitPrice: product.unitPrice,
         store: product.store
-      });
+      }));
     }
   };
 
   const handleBasketClick = () => {
-    if (isInBasket) {
-      removeFromBasket(product.productId);
+    if (isInBasket && basketItem) {
+      dispatch(removeItem({ ...basketItem, quantity: basketItem.quantity }));
     } else {
-      addToBasket({
-        productId: product.productId,
-        imageUrl: product.imageUrl,
-        productName: product.productName,
-        brand: product.brand,
-        unitPrice: product.unitPrice,
-        store: product.store
-      });
+      dispatch(addToBasket(productPayloadForBasket));
     }
   };
 

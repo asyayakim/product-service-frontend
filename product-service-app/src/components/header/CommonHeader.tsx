@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaHome, FaHeart, FaShoppingBasket, FaSearch, FaUser, FaTimes, FaStore, FaTags } from 'react-icons/fa';
 import AdvertismentTop from '../addvertisment/AdvertismentTop';
-import { useCart } from '../context/CartContext';
 import { API_BASE_URL } from '../../apiConfig';
+import { useAppSelector } from "../app/Store";
 
 type CommonHeaderProps = {
   user: any;
@@ -23,7 +23,13 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { favorites, basket } = useCart();
+   const favorites = useAppSelector((state) => state.favorites.items);
+  const basket = useAppSelector((state) => state.basket.items);
+  const allProductsInBasket = basket.map(item => item.quantity).
+    reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+
+  
+  
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -240,7 +246,7 @@ export default function CommonHeader({ user, logout }: CommonHeaderProps) {
               <Link to="/basket" className="nav-link">
                 <div className="basket-icon-container">
                   <FaShoppingBasket />
-                  <span className="basket-badge">{basket.length}</span>
+                  <span className="basket-badge">{allProductsInBasket}</span>
                 </div>
                 <span className="nav-text">Basket</span>
               </Link>

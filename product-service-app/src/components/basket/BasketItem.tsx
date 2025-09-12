@@ -1,13 +1,14 @@
 import { FaTrash, FaPlus, FaMinus } from 'react-icons/fa';
-import type { BasketItem } from '../context/CartContext';
+import { BasketItem as BasketItemType } from "../../features/Basket/basketSlice";
 
-type BasketItemProps = {
-  item: BasketItem;
-  onIncrease: (id: number) => void;
-  onDecrease: (id: number) => void;
-  onUpdate: (id: number, qty: number) => void;
-  onRemove: (id: number) => void;
-};
+
+export interface BasketItemProps {
+  item: BasketItemType;
+  onIncrease: (productId: number) => void;
+  onDecrease: (productId: number) => void;
+  onUpdate: (productId: number, qty: number) => void;
+  onRemove: (productId: number) => void;
+}
 
 export default function BasketItem({ 
   item, 
@@ -16,6 +17,7 @@ export default function BasketItem({
   onUpdate, 
   onRemove 
 }: BasketItemProps) {
+  
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('no-NO', {
       style: 'currency',

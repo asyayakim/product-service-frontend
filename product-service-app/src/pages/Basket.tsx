@@ -1,24 +1,21 @@
-import { useMemo, useState } from 'react';
-import { useCart } from '../components/context/CartContext';
-import EmptyBasket from '../components/basket/EmptyBasket';
-import BasketItem from '../components/basket/BasketItem';
-import OrderSummary from '../components/basket/OrderSummary';
+import { useMemo, useState } from "react";
+import EmptyBasket from "../components/basket/EmptyBasket";
+import BasketItem from "../components/basket/BasketItem";
+import OrderSummary from "../components/basket/OrderSummary";
+import { clearBasket, addToBasket, removeItem } from "../features/Basket/basketSlice";
+import { useAppDispatch, useAppSelector } from "../components/app/Store";
 
 const TAX_RATE = 0.10; // 10%
 const SHIPPING_COSTS = { standard: 4.99, express: 12.99, free: 0 };
 
 export default function Basket() {
-  const { 
-    basket, 
-    setQuantity, 
-    removeFromBasket, 
-    clearBasket 
-  } = useCart();
+  const basket = useAppSelector((state) => state.basket.items);
+  const dispatch = useAppDispatch();
   
-  const [coupon, setCoupon] = useState('');
+  const [coupon, setCoupon] = useState("");
   const [couponDiscount, setCouponDiscount] = useState<number>(0); 
-  const [shipping, setShipping] = useState<'standard' | 'express' | 'free'>('standard');
-  const [couponMessage, setCouponMessage] = useState<string>('');
+  const [shipping, setShipping] = useState<"standard" | "express" | "free">("standard");
+  const [couponMessage, setCouponMessage] = useState<string>("");
 
   const subtotal = useMemo(
     () => basket.reduce((s, item) => s + item.unitPrice * item.quantity, 0),
@@ -27,34 +24,44 @@ export default function Basket() {
   
   const discountAmount = subtotal * couponDiscount;
   const tax = (subtotal - discountAmount) * TAX_RATE;
-  const shippingCost = (shipping === 'free' && subtotal >= 300) ? 0 : SHIPPING_COSTS[shipping];
+  const shippingCost = shipping === "free" && subtotal >= 300 ? 0 : SHIPPING_COSTS[shipping];
   const total = subtotal - discountAmount + tax + shippingCost;
 
-  const updateQuantity = (productId: number, qty: number) => {
-    if (qty < 1) qty = 1;
-    setQuantity(productId, qty);
-  };
-
-  const increase = (id: number) => {
-    const item = basket.find(item => item.productId === id);
+  const handleIncrease = (productId: number) => {
+    const item = basket.find((i) => i.productId === productId);
     if (item) {
-      setQuantity(id, item.quantity + 1);
+      dispatch(addToBasket({ ...item, quantity: 1 }));
     }
   };
 
-  const decrease = (id: number) => {
-    const item = basket.find(item => item.productId === id);
+  const handleDecrease = (productId: number) => {
+    const item = basket.find((i) => i.productId === productId);
     if (item) {
-      setQuantity(id, Math.max(1, item.quantity - 1));
+      dispatch(removeItem({ ...item, quantity: 1 }));
     }
   };
 
-  const handleRemoveFromBasket = (id: number) => {
-    removeFromBasket(id);
+  const handleUpdate = (productId: number, qty: number) => {
+    const item = basket.find((i) => i.productId === productId);
+    if (item) {
+      const diff = qty - item.quantity;
+      if (diff > 0) {
+        dispatch(addToBasket({ ...item, quantity: diff }));
+      } else if (diff < 0) {
+        dispatch(removeItem({ ...item, quantity: -diff }));
+      }
+    }
+  };
+
+  const handleRemove = (productId: number) => {
+    const item = basket.find((i) => i.productId === productId);
+    if (item) {
+      dispatch(removeItem({ ...item, quantity: item.quantity }));
+    }
   };
 
   const handleClearCart = () => {
-    clearBasket();
+    dispatch(clearBasket());
   };
 
   const applyCoupon = () => {
@@ -99,14 +106,14 @@ export default function Basket() {
             </div>
             
             <div className="divide-y divide-gray-100">
-              {basket.map(item => (
+              {basket.map((item) => (
                 <BasketItem 
                   key={item.productId}
                   item={item}
-                  onIncrease={increase}
-                  onDecrease={decrease}
-                  onUpdate={updateQuantity}
-                  onRemove={handleRemoveFromBasket}
+                  onIncrease={handleIncrease}
+                  onDecrease={handleDecrease}
+                  onUpdate={handleUpdate}
+                  onRemove={handleRemove}
                 />
               ))}
             </div>
