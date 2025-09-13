@@ -1,15 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  FaTruck,
-  FaAward,
-  FaHeadset,
-  FaCartPlus,
-  FaHeart,
-  FaSearch
-} from 'react-icons/fa';
+import { FaTruck, FaAward, FaHeadset, FaCartPlus, FaHeart, FaSearch } from 'react-icons/fa';
 import { API_BASE_URL } from '../../apiConfig';
 import Loading from '../elements/Loading';
+import { useAppDispatch, useAppSelector } from "../app/Store";
+import { addToFavorites } from "../../features/Favorites/favoritesSlice";
 
 interface ProductCardProps {
   productId: number;
@@ -26,11 +21,13 @@ interface ProductCardProps {
 }
 
 export default function AddSection() {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [featuredProduct, setFeaturedProduct] = useState<ProductCardProps | null>(null);
   const [miniProducts, setMiniProducts] = useState<ProductCardProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const favorites = useAppSelector((state) => state.favorites.items);
 
   useEffect(() => {
     const fetchHeroProducts = async () => {
@@ -72,9 +69,15 @@ export default function AddSection() {
   const handleProductClick = (productId: number) => {
     navigate(`/products/${productId}`);
   };
+  const handleClick = (productId: number) => {
+    navigate(`/products/${encodeURIComponent(productId)}`);
+  };
+  const countPrice = (price: number): string => {
 
+    return `kr${(price * 1.2).toFixed(2)}`;
+  };
   if (loading) {
-      return <Loading />;
+    return <Loading />;
   }
 
   if (error) {
@@ -129,14 +132,35 @@ export default function AddSection() {
                   alt={featuredProduct.productName}
                   className="img-fluid"
                 />
-                <div className="product-badge">Best Seller</div>
+                <div className="product-badge">Best In Test</div>
                 <div className="product-info">
                   <h4>{featuredProduct.productName}</h4>
                   <div className="price">
                     <span className="sale-price">kr{featuredProduct.unitPrice}</span>
-                    {/* <span className="original-price">$399</span> */}
+                    <span className="original-price">{countPrice(featuredProduct.unitPrice)}</span>
+                    <div className="absolute inset-0 flex items-center justify-center space-x-4 transition-all duration-300 bg-black bg-opacity-0 opacity-0 group-hover:bg-opacity-20 group-hover:opacity-100">
+                      <button
+                        onClick={() => dispatch(addToFavorites({
+                          productId: featuredProduct.productId,
+                          imageUrl: featuredProduct.imageUrl,
+                          productName: featuredProduct.productName,
+                          brand: featuredProduct.brand,
+                          unitPrice: featuredProduct.unitPrice,
+                          store: featuredProduct.store
+                        }))}
+                        className="p-3 transition-colors bg-white rounded-full hover:bg-gray-100"
+                      >
+                        <FaHeart
+                          className={`text-gray-700 ${favorites.some(f => f.productId === featuredProduct.productId) ? "text-red-500" : "hover:text-red-500"}`}
+                        />
+                      </button>
+                      <button onClick={() => handleClick(featuredProduct.productId)} className="p-3 transition-colors bg-white rounded-full hover:bg-gray-100">
+                        <FaSearch className="text-gray-700" />
+                      </button>
+                    </div>
                   </div>
                 </div>
+
               </div>
             )}
 
@@ -151,6 +175,7 @@ export default function AddSection() {
                     className="img-fluid"
                   />
                   <span className="mini-price">kr{miniProducts[0].unitPrice}</span>
+                  <span className="text-sm text-gray-500 line-through">{countPrice(miniProducts[0].unitPrice)}</span>
                 </div>
               )}
 
@@ -164,6 +189,7 @@ export default function AddSection() {
                     className="img-fluid"
                   />
                   <span className="mini-price">kr{miniProducts[1].unitPrice}</span>
+                  <span className="text-sm text-gray-500 line-through">{countPrice(miniProducts[1].unitPrice)}</span>
                 </div>
               )}
             </div>
@@ -183,6 +209,6 @@ export default function AddSection() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

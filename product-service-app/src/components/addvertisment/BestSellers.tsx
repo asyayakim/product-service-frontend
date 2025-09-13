@@ -5,9 +5,11 @@ import ElementStars from '../elements/ElementStars';
 import { useAppDispatch, useAppSelector } from "../app/Store";
 import { addToFavorites } from "../../features/Favorites/favoritesSlice";
 import { addToBasket } from "../../features/Basket/basketSlice";
+import Loading from '../elements/Loading';
+import { Link, useNavigate } from 'react-router-dom';
 
 
-interface ProductDetails {
+export type ProductDetails ={
   productId: number;
   imageUrl: string;
   productName: string;
@@ -28,6 +30,7 @@ interface ProductDetails {
 }
 
 export default function BestSellers() {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<ProductDetails[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -91,9 +94,8 @@ export default function BestSellers() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="w-12 h-12 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
-      </div>
+
+      <Loading/>
     );
   }
 
@@ -106,6 +108,10 @@ export default function BestSellers() {
       </div>
     );
   }
+
+   const handleClick = (productId: number) => {
+    navigate(`/products/${encodeURIComponent(productId)}`);
+  };
 
   return (
     <div className="px-4 py-12 mx-auto max-w-7xl">
@@ -157,11 +163,7 @@ export default function BestSellers() {
                     className={`text-gray-700 ${favorites.some(f => f.productId === product.productId) ? "text-red-500" : "hover:text-red-500"}`}
                   />
                 </button>
-
-                <button className="p-3 transition-colors bg-white rounded-full hover:bg-gray-100">
-                  <FaExchangeAlt className="text-gray-700" />
-                </button>
-                <button className="p-3 transition-colors bg-white rounded-full hover:bg-gray-100">
+                <button  onClick={() => handleClick(product.productId)} className="p-3 transition-colors bg-white rounded-full hover:bg-gray-100">
                   <FaSearch className="text-gray-700" />
                 </button>
               </div>

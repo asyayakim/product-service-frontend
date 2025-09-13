@@ -34,7 +34,7 @@ export default function AdvertismentTop() {
               className="announcement-slider swiper"
             >
               <div className="swiper-wrapper">
-                <div className="swiper-slide">🚚 Free shipping on orders over $50</div>
+                <div className="swiper-slide">🚚 Free shipping on orders over 500kr</div>
                 <div className="swiper-slide">💰 30 days money back guarantee.</div>
                 <div className="swiper-slide">🎁 10% off on your first order</div>
               </div>
