@@ -1,7 +1,6 @@
 import { FaTrash, FaHeart } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../components/app/Store";
-import { addToBasket, removeItem } from "../features/Basket/basketSlice";
 import { removeFromFavorites, clearFavorites } from "../features/Favorites/favoritesSlice";
 
 export default function Favorites() {
@@ -17,8 +16,6 @@ export default function Favorites() {
       maximumFractionDigits: 2
     }).format(price);
   };
-
-
 
   return (
     <div className="max-w-6xl px-4 py-8 mx-auto">
@@ -100,21 +97,9 @@ export default function Favorites() {
                       >
                         <FaTrash />
                       </button>
-                      {/* <button
-                        className={`basket-button ${isInBasket ? 'active' : ''}`}
-                        onClick={addToBasket}
-                        disabled={isInBasket(item.productId)}
-                        title={isInBasket(item.productId) ? 'Already in Basket' : 'Add to Basket'}
-                        aria-label={`Add ${item.productName} to basket`}
-                      >
-                        <FaShoppingBasket />
-                      </button> */}
                     </div>
                   </div>
-
-
                 </div>
-
               </div>
             </div>
           ))}
