@@ -99,39 +99,7 @@ export default function Product() {
     </div>
   );
 
-  // const isFavorite = favorites.some(item => item.productId === product.productId);
-  // const isInBasket = basket.some(item => item.productId === product.productId);
-
-  // const handleFavoriteClick = () => {
-  //   if (isFavorite) {
-  //     removeFromFavorites(product.productId);
-  //   } else {
-  //     addToFavorites({
-  //       productId: product.productId,
-  //       imageUrl: product.imageUrl,
-  //       productName: product.productName,
-  //       brand: product.brand,
-  //       unitPrice: product.unitPrice,
-  //       store: product.store
-  //     });
-  //   }
-  // };
-
-  // const handleBasketClick = () => {
-  //   if (isInBasket) {
-  //     removeFromBasket(product.productId);
-  //   } else {
-  //     addToBasket({
-  //       productId: product.productId,
-  //       imageUrl: product.imageUrl,
-  //       productName: product.productName,
-  //       brand: product.brand,
-  //       unitPrice: product.unitPrice,
-  //       store: product.store
-  //     });
-  //   }
-  // };
-   const basketItem = basket.find(i => i.productId === product.productId);
+  const basketItem = basket.find(i => i.productId === product.productId);
   const isInBasket = Boolean(basketItem);
   const isFavorite = favorites.some(f => f.productId === product.productId);
 

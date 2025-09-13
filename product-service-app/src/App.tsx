@@ -26,12 +26,12 @@ export default function App() {
                     <Route path="login/restorePassword" element={<p>Restore Password Page</p>} /> */}
                     <Route path="/products" element={<MainView />} />
                     <Route path="/products/:productId" element={<Product />} />
+                    <Route path="/all-products/:category" element={<AllProducts />} />
                     <Route path="/basket" element={<Basket />} />
                     <Route path="/favorite" element={<Favorites />} />
                     <Route path="/store/:storeId" element={<Store />} />
                     <Route path="/stores" element={<StoresPage />} />
                     <Route path="/all-products" element={<AllProducts />} />
-                    <Route path="/all-products/:category" element={<AllProducts />} />
                     <Route path="/search" element={<SearchResults />} />
 
                     <Route path="*" element={<p>404 - Page not found</p>} />
