@@ -19,44 +19,16 @@ interface ProductCardProps {
     logo: string;
   };
 }
+interface AddSectionProps {
+  featuredProduct: ProductCardProps;
+  miniProducts: ProductCardProps[];
+}
 
-export default function AddSection() {
+
+export default function AddSection({ featuredProduct, miniProducts }: AddSectionProps) {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [featuredProduct, setFeaturedProduct] = useState<ProductCardProps | null>(null);
-  const [miniProducts, setMiniProducts] = useState<ProductCardProps[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const favorites = useAppSelector((state) => state.favorites.items);
-
-  useEffect(() => {
-    const fetchHeroProducts = async () => {
-      try {
-        setLoading(true);
-        const featuredResponse = await fetch(`${API_BASE_URL}/api/products/product-of-the-week`);
-        if (!featuredResponse.ok) {
-          throw new Error('Failed to fetch featured product');
-        }
-        const featuredData = await featuredResponse.json();
-
-        const miniResponse = await fetch(`${API_BASE_URL}/api/products/recent?limit=2`);
-        if (!miniResponse.ok) {
-          throw new Error('Failed to fetch mini products');
-        }
-        const miniData = await miniResponse.json();
-
-        setFeaturedProduct(featuredData);
-        setMiniProducts(miniData);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch categories');
-        console.error('Error fetching hero products:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHeroProducts();
-  }, []);
 
   const handleBrowseStores = () => {
     navigate('/stores');
@@ -76,24 +48,6 @@ export default function AddSection() {
 
     return `kr${(price * 1.2).toFixed(2)}`;
   };
-  if (loading) {
-    return <Loading />;
-  }
-
-  if (error) {
-    return (
-      <section id="hero" className="hero section">
-        <div className="hero-container">
-          <div className="error-placeholder">
-            <p>Error loading products: {error}</p>
-            <button onClick={() => window.location.reload()} className="btn-primary">
-              Try Again
-            </button>
-          </div>
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section id="hero" className="hero section">

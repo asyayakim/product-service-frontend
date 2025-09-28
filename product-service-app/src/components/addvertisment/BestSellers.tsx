@@ -8,7 +8,9 @@ import { addToBasket } from "../../features/Basket/basketSlice";
 import Loading from '../elements/Loading';
 import { Link, useNavigate } from 'react-router-dom';
 
-
+interface BestSellersHelper {
+  bestSellersProducts: ProductDetails[],
+}
 export type ProductDetails ={
   productId: number;
   imageUrl: string;
@@ -29,11 +31,10 @@ export type ProductDetails ={
   }>;
 }
 
-export default function BestSellers() {
+export default function BestSellers({ bestSellersProducts } : BestSellersHelper) {
   const navigate = useNavigate();
-  const [products, setProducts] = useState<ProductDetails[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
+
   const [visibleCards, setVisibleCards] = useState<boolean[]>([]);
   const dispatch = useAppDispatch();
   const favorites = useAppSelector((state) => state.favorites.items);
@@ -47,40 +48,11 @@ export default function BestSellers() {
     setTimeout(() => setAnimateProductId(null), 400);
   };
 
-
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${API_BASE_URL}/api/products/top-sellers`);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        setProducts(data);
-        setVisibleCards(new Array(data.length).fill(false));
-      } catch (err) {
-        if (err instanceof Error) {
-          setError(err.message);
-        } else {
-          setError('Failed to fetch product details');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-
-  useEffect(() => {
-    if (products.length > 0) {
+    if (bestSellersProducts.length > 0) {
       const timer = setTimeout(() => {
         const newVisibleCards = [...visibleCards];
-        products.forEach((_, index) => {
+        bestSellersProducts.forEach((_, index) => {
           setTimeout(() => {
             newVisibleCards[index] = true;
             setVisibleCards([...newVisibleCards]);
@@ -90,24 +62,17 @@ export default function BestSellers() {
 
       return () => clearTimeout(timer);
     }
-  }, [products.length]);
+  }, [bestSellersProducts.length]);
 
-  if (loading) {
-    return (
-
-      <Loading/>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="px-4 py-12 mx-auto max-w-7xl">
-        <div className="p-4 text-center text-red-600 bg-red-100 rounded-lg">
-          Error: {error}
-        </div>
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div className="px-4 py-12 mx-auto max-w-7xl">
+  //       <div className="p-4 text-center text-red-600 bg-red-100 rounded-lg">
+  //         Error: {error}
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
    const handleClick = (productId: number) => {
     navigate(`/products/${encodeURIComponent(productId)}`);
@@ -123,7 +88,7 @@ export default function BestSellers() {
       </div>
 
       <section id="best-sellers" className="grid grid-cols-1 gap-8 px-12 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
-        {products.map((product, index) => (
+        {bestSellersProducts.map((product, index) => (
           <div
             key={product.productId}
             className={`

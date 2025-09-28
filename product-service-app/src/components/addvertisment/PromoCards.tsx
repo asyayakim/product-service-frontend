@@ -9,66 +9,36 @@ interface Category {
   imageUrl: string;
   totalProductsByCategory: number;
 }
+interface CategoriesHelperProps{
+  topCategories: Category[],
+}
 
-export default function PromoCardsSection() {
+export default function PromoCardsSection({topCategories}: CategoriesHelperProps) {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        setLoading(true);
-        const response = await fetch(`${API_BASE_URL}/api/products/categories-with-total-products`);
-        
-        if (!response.ok) {
-          throw new Error('Failed to fetch categories');
-        }
-        
-        const data = await response.json();
-        setCategories(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to fetch categories');
-        console.error('Error fetching categories:', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
   const handleCategoryClick = (categoryName: string) => {
     navigate(`/all-products/${encodeURIComponent(categoryName)}`);
   };
 
-  if (loading) {
-    return (
-      <Loading />
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <section id="promo-cards" className="py-16 bg-gradient-to-r from-gray-100 to-white">
+  //       <div className="container px-4 mx-auto">
+  //         <div className="text-center text-red-500">
+  //           <p>Error loading categories: {error}</p>
+  //           <button 
+  //             onClick={() => window.location.reload()} 
+  //             className="px-6 py-2 mt-4 text-white transition-colors bg-gray-800 rounded-md hover:bg-gray-900"
+  //           >
+  //             Try Again
+  //           </button>
+  //         </div>
+  //       </div>
+  //     </section>
+  //   );
+  // }
 
-  if (error) {
-    return (
-      <section id="promo-cards" className="py-16 bg-gradient-to-r from-gray-100 to-white">
-        <div className="container px-4 mx-auto">
-          <div className="text-center text-red-500">
-            <p>Error loading categories: {error}</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="px-6 py-2 mt-4 text-white transition-colors bg-gray-800 rounded-md hover:bg-gray-900"
-            >
-              Try Again
-            </button>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
-  const featuredCategory = categories.length > 0 ? categories[0] : null;
-  const otherCategories = categories.length > 1 ? categories.slice(1, 5) : [];
+  const featuredCategory = topCategories.length > 0 ? topCategories[0] : null;
+  const otherCategories = topCategories.length > 1 ? topCategories.slice(1, 5) : [];
 
   return (
     <section id="promo-cards" className="py-1">
