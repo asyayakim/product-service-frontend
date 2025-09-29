@@ -53,7 +53,7 @@ export default function Register() {
 
       const username = formData.email.split('@')[0] + Math.floor(Math.random() * 1000);
       
-      const authResponse = await fetch(`${API_BASE_URL}/auth/register`, {
+      const authResponse = await fetch(`${API_BASE_URL}/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -70,7 +70,6 @@ export default function Register() {
         setIsLoading(false);
         return;
       }
-
       
       const customerResponse = await fetch(`${API_BASE_URL}/Customer`, {
         method: "POST",
@@ -84,7 +83,7 @@ export default function Register() {
           country: formData.country
         })
       });
-
+      
       if (customerResponse.ok) {
         setMessage("Registration successful! Redirecting to login...");
         setTimeout(() => navigate("/login"), 2000);
@@ -240,6 +239,7 @@ export default function Register() {
                       required
                     >
                       <option value="" disabled>Select your country</option>
+                      <option value="no">Norway</option>
                       <option value="us">United States</option>
                       <option value="ca">Canada</option>
                       <option value="uk">United Kingdom</option>
