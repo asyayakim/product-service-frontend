@@ -16,6 +16,7 @@ export default function Register() {
     password: "",
     confirmPassword: "",
     country: "",
+    birthDate: "",
     termsAgreed: false,
     marketingAgreed: false
   });
@@ -53,7 +54,7 @@ export default function Register() {
 
       const username = formData.email.split('@')[0] + Math.floor(Math.random() * 1000);
       
-      const authResponse = await fetch(`${API_BASE_URL}/user`, {
+      const authResponse = await fetch(`${API_BASE_URL}/api/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -71,15 +72,14 @@ export default function Register() {
         return;
       }
       
-      const customerResponse = await fetch(`${API_BASE_URL}/Customer`, {
+      const customerResponse = await fetch(`${API_BASE_URL}/api/customer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: Number(authData),
           firstName: firstName,
           lastName: lastName,
-          phoneNumber: "", 
-          dateOfBirth: "", 
+          age: formData.birthDate, 
           country: formData.country
         })
       });
@@ -140,6 +140,29 @@ export default function Register() {
                     <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
                       <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+                <div className="mb-6">
+                  <label htmlFor="fullName" className="block mb-1 text-sm font-medium text-gray-700">
+                    Date of Birth
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="date"
+                      id="birthDate"
+                      name="birthDate"
+                      className="w-full px-4 py-3 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      
+                      value={formData.birthDate}
+                      onChange={handleChange}
+                      required
+                      autoComplete="bday"
+                    />
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
                   </div>
