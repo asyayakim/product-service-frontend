@@ -116,14 +116,14 @@ export default function Register() {
                   </div>
                 </div>
                 <div className="mb-6">
-                  <label htmlFor="fullName" className="block mb-1 text-sm font-medium text-gray-700">
+                  <label htmlFor="birthDay" className="block mb-1 text-sm font-medium text-gray-700">
                     Date of Birth
                   </label>
                   <div className="relative">
                     <input
                       type="date"
-                      id="birthDate"
-                      name="birthDate"
+                      id="birthDay"
+                      name="birthDay"
                       className="w-full px-4 py-3 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       
                       value={formData.birthDay}
