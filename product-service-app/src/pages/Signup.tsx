@@ -48,12 +48,6 @@ export default function Register() {
     setIsLoading(true);
     
     try {
-      const nameParts = formData.fullName.split(' ');
-      const firstName = nameParts[0];
-      const lastName = nameParts.slice(1).join(' ') || "User";
-
-      const username = formData.email.split('@')[0] + Math.floor(Math.random() * 1000);
-      
       const authResponse = await fetch(`${API_BASE_URL}/api/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -64,8 +58,6 @@ export default function Register() {
           age: formData.birthDay, 
         }),
       });
-      console.log(formData)
-
       const authData = await authResponse.json();
       
       if (!authResponse.ok) {
@@ -73,29 +65,6 @@ export default function Register() {
         setIsLoading(false);
         return;
       }
-      
-      const customerResponse = await fetch(`${API_BASE_URL}/api/customer`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userId: Number(authData),
-          firstName: firstName,
-          lastName: lastName,
-          age: formData.birthDay, 
-          // country: formData.country
-        })
-      });
-      
-      if (customerResponse.ok) {
-        setMessage("Registration successful! Redirecting to login...");
-        setTimeout(() => navigate("/login"), 2000);
-      } else {
-        const errorData = await customerResponse.json();
-        setMessage(errorData.message || "Customer profile creation failed");
-      }
-    } catch (error) {
-      setMessage("Error during registration. Please try again.");
-      console.error("Registration error:", error);
     } finally {
       setIsLoading(false);
     }
