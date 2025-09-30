@@ -54,7 +54,8 @@ export default function Register() {
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
-          name: formData.fullName,
+          firstName: formData.fullName.split(" ")[0],
+          lastName: formData.fullName.split(" ")[1],
           birthday: formData.birthDay, 
         }),
       });
