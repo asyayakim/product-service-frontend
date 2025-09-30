@@ -55,7 +55,7 @@ export default function Register() {
           email: formData.email,
           password: formData.password,
           name: formData.fullName,
-          age: formData.birthDay, 
+          birthday: formData.birthDay, 
         }),
       });
       const authData = await authResponse.json();
