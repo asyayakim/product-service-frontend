@@ -16,7 +16,7 @@ export default function Register() {
     password: "",
     confirmPassword: "",
     country: "",
-    birthDate: "",
+    birthDay: "",
     termsAgreed: false,
     marketingAgreed: false
   });
@@ -60,11 +60,11 @@ export default function Register() {
         body: JSON.stringify({
           email: formData.email,
           password: formData.password,
-          firstName: firstName,
-          lastName: lastName,
-          age: formData.birthDate, 
+          name: formData.fullName,
+          age: formData.birthDay, 
         }),
       });
+      console.log(formData)
 
       const authData = await authResponse.json();
       
@@ -81,8 +81,8 @@ export default function Register() {
           userId: Number(authData),
           firstName: firstName,
           lastName: lastName,
-          age: formData.birthDate, 
-          country: formData.country
+          age: formData.birthDay, 
+          // country: formData.country
         })
       });
       
@@ -157,7 +157,7 @@ export default function Register() {
                       name="birthDate"
                       className="w-full px-4 py-3 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       
-                      value={formData.birthDate}
+                      value={formData.birthDay}
                       onChange={handleChange}
                       required
                       autoComplete="bday"
@@ -205,7 +205,7 @@ export default function Register() {
                         id="password"
                         name="password"
                         className="w-full px-4 py-3 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="At least 8 characters"
+                        placeholder="At least 8 characters, one capital, one number and special symbol"
                         minLength={8}
                         value={formData.password}
                         onChange={handleChange}
