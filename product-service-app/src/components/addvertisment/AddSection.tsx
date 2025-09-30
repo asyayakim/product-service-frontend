@@ -1,8 +1,5 @@
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FaTruck, FaAward, FaHeadset, FaCartPlus, FaHeart, FaSearch } from 'react-icons/fa';
-import { API_BASE_URL } from '../../apiConfig';
-import Loading from '../elements/Loading';
 import { useAppDispatch, useAppSelector } from "../app/Store";
 import { addToFavorites } from "../../features/Favorites/favoritesSlice";
 

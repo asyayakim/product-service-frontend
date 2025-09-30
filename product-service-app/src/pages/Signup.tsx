@@ -66,6 +66,10 @@ export default function Register() {
         setIsLoading(false);
         return;
       }
+      if (authResponse.ok) {
+        navigate(`/login`);
+        setMessage("Registration Successful")
+      }
     } finally {
       setIsLoading(false);
     }
