@@ -2,8 +2,7 @@ import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { UserContext } from "../components/context/UserProvider";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
-
-export const API_BASE_URL = "https://hotelservice-1.onrender.com";
+import { API_BASE_URL } from "../apiConfig";
 
 export default function Login() {
   const { login } = useContext(UserContext)!;
@@ -20,7 +19,7 @@ export default function Login() {
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userName, password }),
+        body: JSON.stringify({ email: userName, password }),
       });
 
       const data = await response.json();
@@ -36,7 +35,8 @@ export default function Login() {
         email: data.userDto.email,
         role: data.userDto.role,
         token: data.token,
-        imageUrl: data.userDto.imageUrl,
+        favorites: data.userDto.favorites || [],
+        basket: data.userDto.basket || [],
       };
 
       login({ user, token: data.token });
@@ -50,18 +50,6 @@ export default function Login() {
 
   return (
     <main className="main">
-      {/* <div className="page-title light-background">
-        <div className="container d-lg-flex justify-content-between align-items-center">
-          <h1 className="mb-2 mb-lg-0">Login</h1>
-          <nav className="breadcrumbs">
-            <ol>
-              <li><Link to="/">Home</Link></li>
-              <li className="current">Login</li>
-            </ol>
-          </nav>
-        </div>
-      </div> */}
-
       <section id="login" className="py-12">
         <div className="max-w-6xl px-4 mx-auto">
           <div className="max-w-md p-8 mx-auto bg-white shadow-md rounded-xl">
@@ -107,7 +95,7 @@ export default function Login() {
                 type="submit"
                 className="w-full py-3 font-medium text-white transition bg-blue-600 rounded-lg hover:bg-blue-700"
               >
-                Sign In
+                Login
               </button>
 
               {message && <p className="mt-4 text-red-500">{message}</p>}
