@@ -9,7 +9,7 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -24,7 +24,7 @@ export default function Register() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     const checked = type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
-    
+
     setFormData(prev => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value
@@ -34,19 +34,19 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setMessage("");
-    
+
     if (formData.password !== formData.confirmPassword) {
       setMessage("Passwords do not match");
       return;
     }
-    
+
     if (!formData.termsAgreed) {
       setMessage("You must agree to the Terms of Service and Privacy Policy");
       return;
     }
-    
+
     setIsLoading(true);
-    
+
     try {
       const authResponse = await fetch(`${API_BASE_URL}/api/user`, {
         method: "POST",
@@ -56,20 +56,21 @@ export default function Register() {
           password: formData.password,
           firstName: formData.fullName.split(" ")[0],
           lastName: formData.fullName.split(" ")[1],
-          birthday: formData.birthDay, 
+          birthday: formData.birthDay,
         }),
       });
       const authData = await authResponse.json();
-      
+
       if (!authResponse.ok) {
         setMessage(authData.message || "Registration failed");
         setIsLoading(false);
         return;
       }
-      if (authResponse.ok) {
-        navigate(`/login`);
-        setMessage("Registration Successful")
-      }
+      setMessage(authData.message);
+      setTimeout(() => navigate("/login"), 1500);
+    } catch (error) {
+      console.error("Error:", error);
+      setMessage("Error during registration. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -77,14 +78,14 @@ export default function Register() {
 
   return (
     <main className="min-h-screen">
-      
+
       <section id="register" className="relative px-4 py-16 sm:px-6 lg:px-8">
         <div className="absolute w-16 h-16 bg-blue-200 rounded-full opacity-50 top-20 left-10"></div>
         <div className="absolute w-24 h-24 bg-purple-200 rounded-full opacity-50 bottom-20 right-10"></div>
         <div className="absolute w-12 h-12 bg-yellow-100 rounded-full top-1/3 right-1/4 opacity-40"></div>
         <div className="absolute w-10 h-10 bg-pink-100 rounded-full top-1/2 left-1/3 opacity-40"></div>
         <div className="absolute w-20 h-20 bg-green-100 rounded-full top-40 right-40 opacity-30"></div>
-        
+
         <div className="mx-auto max-w-7xl">
           <div className="mb-16 text-center">
             <h2 className="mb-4 text-3xl font-bold text-gray-800">Create Your Account</h2>
@@ -130,7 +131,7 @@ export default function Register() {
                       id="birthDay"
                       name="birthDay"
                       className="w-full px-4 py-3 transition border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      
+
                       value={formData.birthDay}
                       onChange={handleChange}
                       required
@@ -186,7 +187,7 @@ export default function Register() {
                         required
                         autoComplete="new-password"
                       />
-                      <button 
+                      <button
                         type="button"
                         className="absolute inset-y-0 right-0 flex items-center pr-3"
                         onClick={() => setShowPassword(!showPassword)}
@@ -195,7 +196,7 @@ export default function Register() {
                       </button>
                     </div>
                   </div>
-                  
+
                   <div>
                     <label htmlFor="confirmPassword" className="block mb-1 text-sm font-medium text-gray-700">
                       Confirm Password
@@ -213,7 +214,7 @@ export default function Register() {
                         required
                         autoComplete="new-password"
                       />
-                      <button 
+                      <button
                         type="button"
                         className="absolute inset-y-0 right-0 flex items-center pr-3"
                         onClick={() => setShowConfirmPassword(!showConfirmPassword)}
@@ -250,7 +251,7 @@ export default function Register() {
                     </select>
                     <div className="absolute inset-y-0 right-0 flex items-center px-2 text-gray-700 pointer-events-none">
                       <svg className="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/>
+                        <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
                       </svg>
                     </div>
                   </div>
@@ -300,11 +301,10 @@ export default function Register() {
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-all ${
-                      isLoading 
-                        ? 'bg-blue-400 cursor-not-allowed' 
-                        : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
-                    }`}
+                    className={`w-full py-3 px-4 rounded-lg font-semibold text-white transition-all ${isLoading
+                      ? 'bg-blue-400 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                      }`}
                   >
                     {isLoading ? (
                       <div className="flex items-center justify-center">
@@ -321,11 +321,10 @@ export default function Register() {
                 </div>
 
                 {message && (
-                  <div className={`mb-6 p-3 rounded-lg text-center ${
-                    message.includes("successful") 
-                      ? "bg-green-100 text-green-700" 
-                      : "bg-red-100 text-red-700"
-                  }`}>
+                  <div className={`mb-6 p-3 rounded-lg text-center ${message.includes("successful")
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                    }`}>
                     {message}
                   </div>
                 )}
@@ -341,21 +340,21 @@ export default function Register() {
                 </div>
 
                 <div className="grid grid-cols-1 gap-3 mb-8 sm:grid-cols-3">
-                  <button 
+                  <button
                     type="button"
                     className="flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                   >
                     <FaGoogle className="mr-2 text-red-500" />
                     <span className="font-medium">Google</span>
                   </button>
-                  <button 
+                  <button
                     type="button"
                     className="flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                   >
                     <FaFacebook className="mr-2 text-blue-600" />
                     <span className="font-medium">Facebook</span>
                   </button>
-                  <button 
+                  <button
                     type="button"
                     className="flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                   >
@@ -367,7 +366,7 @@ export default function Register() {
                 <div className="text-center">
                   <p className="text-gray-600">
                     Already have an account?{' '}
-                    <button 
+                    <button
                       type="button"
                       onClick={() => navigate("/login")}
                       className="font-medium text-blue-600 hover:text-blue-500"
@@ -381,8 +380,6 @@ export default function Register() {
           </div>
         </div>
       </section>
-
-   
     </main>
   );
 }
