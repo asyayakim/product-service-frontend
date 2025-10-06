@@ -4,6 +4,14 @@ import storage from "redux-persist/lib/storage";
 import basketReducer from "../../features/Basket/basketSlice";
 import favoritesReducer from "../../features/Favorites/favoritesSlice"
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import userReducer from "../../features/User/userSlice";
+
+const userPersistConfig = {
+  key: "user",
+  storage,
+};
+
+const persistedUserReducer = persistReducer(userPersistConfig, userReducer);
 
 const basketPersistConfig = {
   key: "basket",
@@ -16,6 +24,7 @@ export const store = configureStore({
   reducer: {
     basket: persistedBasketReducer,
     favorites: favoritesReducer,
+    user: persistedUserReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
