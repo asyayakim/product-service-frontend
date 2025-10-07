@@ -1,16 +1,25 @@
-import { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { UserContext } from "../components/context/UserProvider";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash, FaLock, FaUser } from "react-icons/fa";
 import { API_BASE_URL } from "../apiConfig";
+import { useAppDispatch, useAppSelector } from "../components/app/Store";
+import { login as loginAction } from "../features/User/userSlice";
+import { Link } from "react-router-dom";
 
 export default function Login() {
-  const { login } = useContext(UserContext)!;
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+
+
+  if (user.user) {
+    navigate("/");
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,7 +48,7 @@ export default function Login() {
         basket: data.userDto.basket || [],
       };
 
-      login({ user, token: data.token });
+      dispatch(loginAction(user));
       setMessage("Login successful!");
       navigate("/");
     } catch (error) {
