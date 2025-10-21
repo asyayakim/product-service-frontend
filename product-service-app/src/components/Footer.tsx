@@ -13,9 +13,6 @@ export default function Footer() {
 
                             </div>
                         </div>
-
-                    
-
                         <div className="col-lg-2 col-md-6 col-sm-6">
                             <div className="footer-widget">
                                 <h4>Support</h4>

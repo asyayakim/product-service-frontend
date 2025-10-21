@@ -3,6 +3,7 @@ import { FaRegHeart, FaHeart, FaShoppingBasket } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../components/app/Store";
 import { addToFavorites, removeFromFavorites } from "../features/Favorites/favoritesSlice";
 import { addToBasket, removeItem } from "../features/Basket/basketSlice";
+import Button from "./Button";
 
 interface ProductCardProps {
   productId: number;
@@ -88,14 +89,13 @@ const ProductCard = ({
               (e.target as HTMLImageElement).src = 'https://img.icons8.com/?size=100&id=-5tLho_7N4sS&format=png&color=6E6E6E';
             }}
           />
-          
-          <button 
+          <Button name="favorite-button"
             className={`favorite-button ${isFavorite ? 'active' : ''}`}
             onClick={handleFavoriteClick}
-            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-          >
+            aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}>
             {isFavorite ? <FaHeart /> : <FaRegHeart />}
-          </button>
+          </Button>
+        
         </div>
         
         <div className="product-details">
@@ -115,14 +115,13 @@ const ProductCard = ({
               />
               <span>{store.name}</span>
             </div>
-            
-            <button 
+            <Button name="basket-button"
               className={`basket-button ${isInBasket ? 'active' : ''}`}
               onClick={handleBasketClick}
-              aria-label={isInBasket ? 'Remove from basket' : 'Add to basket'}
-            >
+              aria-label={isInBasket ? 'Remove from basket' : 'Add to basket'}>
               <FaShoppingBasket />
-            </button>
+            </Button>
+      
           </div>
         </div>
       </div>
