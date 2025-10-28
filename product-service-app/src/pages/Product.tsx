@@ -5,6 +5,9 @@ import { FaRegHeart, FaHeart, FaShoppingBasket, FaArrowLeft } from 'react-icons/
 import { useAppDispatch, useAppSelector } from '../components/app/Store';
 import { addToBasket, removeItem } from '../features/Basket/basketSlice';
 import { addToFavorites, removeFromFavorites } from '../features/Favorites/favoritesSlice';
+import Button from '../components/Button';
+import Table from '../components/elements/Table';
+import TextField from '../components/elements/TextField';
 
 interface ProductDetails {
   productId: number;
@@ -172,61 +175,42 @@ export default function Product() {
           </div>
 
           <div className="flex mb-6 space-x-4">
-            <button
+            
+            <Button
               className={`flex items-center justify-center px-4 py-2 rounded-lg ${
                 isInBasket 
                   ? ' text-gray-500 hover:text-red-600' 
                   : ' text-gray-500 hover:text-green-600'
               } transition-colors`}
               onClick={handleBasketClick}
+              label={isInBasket ? 'Remove from Basket' : 'Add to Basket'}
             >
               <FaShoppingBasket className="mr-2" />
               {isInBasket ? 'Remove from Basket' : 'Add to Basket'}
-            </button>
-            
-            <button
+            </Button>
+            <Button
               className={`flex items-center justify-center px-4 py-2 rounded-lg ${
                 isFavorite 
                   ? ' text-gray-500 hover:text-pink-500' 
                   : ' text-gray-500 hover:text-gray-500'
               } transition-colors`}
               onClick={handleFavoriteClick}
+              label={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
             >
               {isFavorite ? <FaHeart className="mr-2 text-red-500" /> : <FaRegHeart className="mr-2" />}
               {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
-            </button>
+            </Button>
+  
           </div>
-
-          <div className="mb-6">
-            <h2 className="mb-2 text-xl font-semibold">Description</h2>
-            <p className="text-gray-700">{product.description}</p>
-          </div>
-
-          <div className="mb-6">
-            <h2 className="mb-2 text-xl font-semibold">Ingredients</h2>
-            <p className="text-gray-700">{product.ingredients}</p>
-          </div>
+          <TextField label="Description">
+            {product.description}
+          </TextField>
+          <TextField label="Ingredients">
+            {product.ingredients}
+          </TextField>
 
           <div>
-            <h2 className="mb-2 text-xl font-semibold">Nutrition Information</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full bg-white">
-                <thead className="bg-gray-100">
-                  <tr>
-                    <th className="px-4 py-2 text-left">Nutrient</th>
-                    <th className="px-4 py-2 text-left">Amount per serving</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {product.nutrition.map((nutrient, index) => (
-                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}>
-                      <td className="px-4 py-2">{nutrient.displayName === "Unknown" ? "Nutrient" : nutrient.displayName}</td>
-                      <td className="px-4 py-2">{nutrient.amount} {nutrient.unit}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <Table columns={['Nutrient', 'Amount per serving']} data={product.nutrition} tableName='Nutrition Information' />
           </div>
         </div>
       </div>
